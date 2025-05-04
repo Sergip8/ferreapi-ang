@@ -1,0 +1,37 @@
+<section class="relative h-[30vh] flex items-center max-w-full">
+    <!-- Background Image -->
+    <div 
+      class="absolute inset-0 bg-[url('/assets/images/hero_main.png')] bg-cover bg-center"
+      role="img"
+      aria-label="Professional PVC pipe installation"
+    ></div>
+    
+    <!-- Dark Overlay -->
+    <div class="absolute inset-0 bg-black/50"></div>
+
+    <!-- Content -->
+    <div class="container relative mx-auto px-4 text-center">
+      <div class="max-w-3xl mx-auto">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white">
+          <span class="text-pvc-yellow">Quality</span> PVC Solutions for Any Project
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-200 mb-8">
+          Trusted by professionals and DIYers alike - your one-stop shop for plumbing supplies
+        </p>
+        <div class="flex gap-4 justify-center">
+          <a
+            routerLink="/catalog"
+            class="bg-pvc-red text-white px-8 py-4 rounded-lg hover:bg-red-900 transition-all cursor-pointer"
+          >
+            Browse Products
+          </a>
+          <a
+            routerLink="/contractors"
+            class="border-2 border-pvc-yellow text-pvc-yellow px-8 py-4 rounded-lg hover:bg-yellow-500/10 transition-all"
+          >
+            Contractor Portal
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>

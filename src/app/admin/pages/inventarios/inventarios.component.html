@@ -1,0 +1,23 @@
+<app-filter [sortFields]="sortFields" (filterChange)="onFilterChange($event)"></app-filter>
+
+<app-table 
+  [columns]="inventoryColumns"
+  [data]="tableData"
+  [title]="title"
+  (edit)="onEdit($event)"
+  (delete)="onDelete($event)"
+  (rowClick)="onRowClick($event)"
+  (pageChange)="onPageChange($event)"
+  (createUser)="onCreateInventory()"
+></app-table>
+
+<app-modal [isOpen]="isModalOpen" [title]="modalTitle" (closeModal)="closeModal()">
+  <div class="p-6">
+    <app-form 
+      [formConfig]="formSchema" 
+      [formData]="formData" 
+      (formSubmit)="onFormSubmit($event)" 
+      (formCancel)="onFormCancel()"
+    ></app-form>
+  </div>
+</app-modal>

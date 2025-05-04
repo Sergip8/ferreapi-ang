@@ -1,0 +1,158 @@
+
+<div class="bg-white rounded-lg shadow-md overflow-hidden">
+  <!-- Cabecera del filtro -->
+  <div class="bg-amber-500 text-white p-4 flex justify-between items-center">
+    <h2 class="text-lg font-bold">Filtros</h2>
+    <button 
+      (click)="clearFilters()" 
+      class="text-white bg-orange-600 hover:bg-orange-700 px-3 py-1 rounded-md text-sm transition-colors duration-200">
+      Limpiar
+    </button>
+  </div>
+
+  <!-- Contenido de filtros -->
+  <div class="p-4">
+    <!-- Sección de categorías -->
+    <div class="mb-6">
+      <div 
+        class="flex justify-between items-center cursor-pointer mb-2"
+        (click)="toggleSection('categories')">
+        <h3 class="font-medium text-orange-800">Categorías</h3>
+        <span class="text-orange-600">
+          <svg 
+            [@rotateIcon]="getAnimationState(expandedCategories)"
+            class="w-5 h-5" 
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </span>
+      </div>
+      <div [@slideInOut]="getAnimationState(expandedCategories)" class="pl-2 space-y-2">
+        <div *ngFor="let category of filterValues?.categories" class="flex items-center">
+          <label class="flex items-center cursor-pointer hover:bg-amber-50 w-full py-1 px-2 rounded">
+            <input 
+              type="checkbox" 
+              [checked]="category.selected" 
+              (change)="toggleCategorySelection(category)"
+              class="form-checkbox h-4 w-4 text-orange-600">
+            <span class="ml-2 text-gray-700">{{ category.name }}</span>
+            <span class="ml-1 text-gray-500 text-sm">({{ category.count }})</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de marcas -->
+    <div class="mb-6">
+      <div 
+        class="flex justify-between items-center cursor-pointer mb-2"
+        (click)="toggleSection('brands')">
+        <h3 class="font-medium text-orange-800">Marcas</h3>
+        <span class="text-orange-600">
+          <svg 
+            [@rotateIcon]="getAnimationState(expandedBrands)"
+            class="w-5 h-5" 
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </span>
+      </div>
+      <div [@slideInOut]="getAnimationState(expandedBrands)" class="pl-2 space-y-2">
+        <div *ngFor="let brand of filterValues?.brands" class="flex items-center">
+          <label class="flex items-center cursor-pointer hover:bg-amber-50 w-full py-1 px-2 rounded">
+            <input 
+              type="checkbox" 
+              [checked]="brand.selected" 
+              (change)="toggleBrandSelection(brand)"
+              class="form-checkbox h-4 w-4 text-orange-600">
+            <span class="ml-2 text-gray-700">{{ brand.name }}</span>
+            <span class="ml-1 text-gray-500 text-sm">({{ brand.count }})</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de rango de precios -->
+    <div class="mb-6">
+      <div 
+        class="flex justify-between items-center cursor-pointer mb-2"
+        (click)="toggleSection('price')">
+        <h3 class="font-medium text-orange-800">Rango de Precios</h3>
+        <span class="text-orange-600">
+          <svg 
+            [@rotateIcon]="getAnimationState(expandedPrice)"
+            class="w-5 h-5" 
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </span>
+      </div>
+      <div [@slideInOut]="getAnimationState(expandedPrice)" class="pl-2">
+        <form [formGroup]="filterForm" class="space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="text-gray-600 text-sm">Min: ${{ currentPriceRange.min }}</span>
+            <span class="text-gray-600 text-sm">Max: ${{ currentPriceRange.max }}</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label for="minPrice" class="block text-sm text-gray-600 mb-1">Mínimo ($)</label>
+              <input 
+                type="number" 
+                id="minPrice" 
+                formControlName="priceMin"
+                [min]="currentPriceRange.min"
+                [max]="filterForm.value.priceMax"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+            </div>
+            <div>
+              <label for="maxPrice" class="block text-sm text-gray-600 mb-1">Máximo ($)</label>
+              <input 
+                type="number" 
+                id="maxPrice" 
+                formControlName="priceMax"
+                [min]="filterForm.value.priceMin"
+                [max]="currentPriceRange.max"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Sección de atributos -->
+    <div>
+      <h3 class="font-medium text-orange-800 mb-3">Características</h3>
+      <div class="space-y-3">
+        <div *ngFor="let attribute of filterValues?.attributes" class="border-b border-gray-200 pb-2">
+          <div 
+            class="flex justify-between items-center cursor-pointer"
+            [id]="'attr-' + attribute.name"
+            (click)="toggleAttribute(attribute)">
+            <span class="text-gray-700">{{ formatAttributeName(attribute.name) }}</span>
+            <span class="text-orange-600">
+              <svg 
+                [@rotateIcon]="getAnimationState(attribute.expanded ?? false)"
+                class="w-4 h-4" 
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </span>
+          </div>
+          <div [@slideInOut]="getAnimationState(attribute.expanded ?? false)" class="pl-2 mt-2 space-y-2">
+            <div *ngFor="let value of attribute.values" class="flex items-center">
+              <label class="flex items-center cursor-pointer hover:bg-amber-50 w-full py-1 px-2 rounded">
+                <input 
+                  type="checkbox" 
+                  [checked]="value.selected" 
+                  (change)="toggleAttributeValueSelection(value)"
+                  class="form-checkbox h-4 w-4 text-orange-600">
+                <span class="ml-2 text-gray-700">{{ value.value }}</span>
+                <span class="ml-1 text-gray-500 text-sm">({{ value.count }})</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

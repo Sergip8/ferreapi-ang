@@ -1,0 +1,111 @@
+<!-- header.component.html -->
+<header class="bg-white shadow-lg fixed w-full top-0 z-50">
+  <nav>
+    <!-- Animated Section: Top Bar with Navigation Links -->
+    <div class="bg-white">
+      <div class="grid grid-cols-12 md:grid-cols-12 items-center h-20 px-4 sm:px-6 lg:px-8">
+        <!-- Logo - 2/12 (md), 6/12 (sm) -->
+        <div class="col-span-6 md:col-span-2 flex items-center justify-center md:justify-start py-2 md:py-0" [routerLink]="publicRoutes.Home">
+          <img src="assets/logo.svg" alt="PVC Supply Co." class="h-10 w-auto">
+          <span class="ml-3 text-2xl font-bold text-brand-red-500 cursor-pointer hidden sm:inline">PVC Supply Co.</span>
+        </div>
+
+        <!-- Navigation Links - 4/12 (center, md+ only) -->
+        <div class="hidden md:flex col-span-4 justify-center space-x-6">
+          <a *ngFor="let nav of navigation" 
+             [routerLink]="nav.path" 
+             class="text-gray-700 hover:text-brand-red-500 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-white hover:shadow-sm"
+             routerLinkActive="text-brand-red-700 bg-white shadow-sm">
+            {{ nav.name }}
+          </a>
+        </div>
+
+        <!-- Search Bar - 12/12 (sm), 4/12 (md+) -->
+        <div class="col-span-12 md:col-span-4 flex justify-center order-3 md:order-none mt-2 md:mt-0">
+          <div class="relative w-full max-w-2xl">
+            <input type="text" 
+                   [(ngModel)]="searchTerm"
+                   (input)="onSearch($event)"
+                   (keydown.enter)="onCatalogSearch($event)"
+                   (blur)="onBlur()"
+                   class="w-full pl-4 pr-10 py-2.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-red-500 focus:border-transparent transition-all duration-200"
+                   placeholder="Search products...">
+            <button (click)="onCatalogSearch($event)"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-brand-red-500 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+            <!-- Search Results Dropdown -->
+            <div *ngIf="showDropdown" 
+                 class="absolute z-50 mt-2 w-full bg-white rounded-lg shadow-xl max-h-96 overflow-y-auto border border-gray-100">
+              <div *ngFor="let product of searchResults" 
+                   (click)="onSelectProduct(product)"
+                   class="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors duration-150">
+                <div class="flex items-center space-x-4">
+                  <img [src]="product.image_url" 
+                       [alt]="product.name"
+                       class="w-14 h-14 object-cover rounded-lg">
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate">
+                      {{product.name}}
+                    </p>
+                    <p class="text-xs text-gray-500 truncate">
+                      {{product.product_code}}
+                    </p>
+                    <div class="flex items-center mt-1">
+                      <span class="text-sm font-medium text-brand-red-500">
+                        ${{product.sale_price}}
+                      </span>
+                      <span *ngIf="product.sale_price !== product.regular_price" 
+                            class="ml-2 text-xs text-gray-500 line-through">
+                        ${{product.regular_price}}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User & Cart - 6/12 (sm), 2/12 (md+) -->
+        <div class="col-span-6 md:col-span-2 flex items-center justify-end space-x-6">
+          <a [routerLink]="publicRoutes.Cart" class="p-2.5 text-gray-600 hover:text-brand-red-500 relative transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span class="absolute -top-1 -right-1 bg-brand-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">{{cartItemsCount}}</span>
+          </a>
+          <a [routerLink]="publicRoutes.Login" class="p-2.5 text-gray-600 hover:text-brand-red-500 transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </a>
+
+          <!-- Mobile Menu Button -->
+          <div class="md:hidden">
+            <button (click)="isMobileMenuOpen = !isMobileMenuOpen" 
+                    class="inline-flex items-center justify-center p-2.5 rounded-lg text-gray-600 hover:text-brand-red-500 hover:bg-gray-100 transition-colors duration-200">
+              <span class="sr-only">Open menu</span>
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div class="md:hidden" [class.hidden]="!isMobileMenuOpen">
+      <div class="pt-2 pb-3 space-y-1 bg-gray-50">
+        <a *ngFor="let nav of navigation" 
+           [routerLink]="nav.path" 
+           class="block px-4 py-3 text-gray-700 hover:bg-white hover:text-brand-red-500 rounded-lg transition-colors duration-200"
+           routerLinkActive="bg-white text-brand-red-700">
+          {{ nav.name }}
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>

@@ -1,0 +1,129 @@
+<div (click)="onClickCard.emit()" [ngClass]="getCardClasses()" class="rounded-lg shadow-md transition-all duration-300 hover:shadow-xl overflow-hidden flex flex-col h-full cursor-pointer">
+  <!-- Card Header with Image -->
+  <div *ngIf="cardData.imageSrc" class="relative">
+    <img [src]="cardData.imageSrc" [alt]="cardData.imageAlt || ''" class="w-full h-44 object-cover object-center">
+
+    <!-- Type Badge -->
+    <div class="absolute top-2 right-2 text-white text-xs font-bold px-3 py-1 rounded-lg shadow-sm"
+         [ngClass]="{
+           'bg-orange-500': cardData.cardType === 'product',
+           'bg-orange-300': cardData.cardType === 'category',
+           'bg-yellow-600': cardData.cardType === 'service',
+           'bg-orange-400': cardData.cardType === 'testimonial'
+         }">
+      {{cardData.cardType | uppercase}}
+    </div>
+
+    <!-- Featured Badge -->
+    <div *ngIf="cardData.featured" class="absolute top-2 left-2 bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-lg shadow-sm">
+      FEATURED
+    </div>
+
+    <!-- Sale Badge -->
+    <div *ngIf="cardData.onSale" class="absolute bottom-2 left-2 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-lg shadow-sm">
+      SALE
+    </div>
+  </div>
+
+  <!-- Brand Section (New) -->
+  <div *ngIf="cardData.brand" class="bg-gray-50 px-5 py-2 flex items-center justify-between border-b border-gray-100">
+    <div class="flex items-center">
+      <img *ngIf="cardData.brandLogo" [src]="cardData.brandLogo" alt="Brand logo" class="h-6 w-auto mr-2">
+      <span class="text-sm font-medium text-gray-700">{{cardData.brand}}</span>
+    </div>
+    <div *ngIf="cardData.verified" class="flex items-center text-green-600 text-xs">
+      <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+      </svg>
+      Verified
+    </div>
+  </div>
+
+  <!-- Card Content -->
+  <div class="p-5 flex flex-col flex-grow">
+    <h3 [ngClass]="getTitleClasses()" class="font-bold mb-2">{{cardData.title}}</h3>
+
+    <p *ngIf="cardData.subtitle" 
+       [ngClass]="{
+         'text-yellow-700': cardData.cardType === 'service',
+         'text-yellow-800': cardData.cardType === 'category',
+         'text-orange-600': cardData.cardType === 'product',
+         'text-orange-900': cardData.cardType === 'testimonial',
+         'text-sm mb-3': true
+       }">
+      {{cardData.subtitle}}
+    </p>
+
+    <!-- Price Information -->
+    <div *ngIf="cardData.price" class="mb-4 flex items-baseline">
+      <span class="text-xl font-bold text-orange-700">
+        ${{cardData.price ? cardData.price.toFixed(2): ''}}
+      </span>
+      <span *ngIf="cardData.originalPrice" class="ml-2 text-sm text-gray-500 line-through">
+        ${{cardData.originalPrice ? cardData.originalPrice : ''}}
+      </span>
+      <span *ngIf="cardData.priceUnit" class="text-sm text-gray-600 ml-1">
+        /{{cardData.priceUnit}}
+      </span>
+      <span *ngIf="cardData.onSale && cardData.originalPrice" class="ml-2 text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded">
+        SAVE {{calcSavingPercentage(cardData.price, cardData.originalPrice)}}%
+      </span>
+    </div>
+
+    <!-- Rating -->
+    <div *ngIf="cardData.rating" class="flex items-center mb-4">
+      <div class="flex">
+        <ng-container *ngFor="let star of [1,2,3,4,5]">
+          <svg class="w-4 h-4" [ngClass]="star <= cardData.rating! ? 'text-yellow-500' : 'text-gray-300'" 
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+          </svg>
+        </ng-container>
+      </div>
+      <span class="text-xs text-gray-600 ml-2">{{cardData.rating}}/5 {{cardData.reviewCount ? '('+cardData.reviewCount +' reviews'+')' : ""}} </span>
+    </div>
+    
+    <p [ngClass]="{
+         'text-gray-600': cardData.cardType === 'product' || cardData.cardType === 'service',
+         'text-gray-700 italic': cardData.cardType === 'testimonial',
+         'mb-4': true
+       }">
+      {{cardData.description}}
+    </p>
+
+    <!-- Product Specs -->
+    <div *ngIf="cardData.specs && cardData.cardType === 'product'" class="grid grid-cols-2 gap-2 my-4 text-sm bg-gray-50 p-3 rounded-lg">
+      <div *ngFor="let spec of cardData.attributes | keyvalue" class="flex items-center">
+        <svg class="w-4 h-4 mr-1 text-yellow-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span class="text-gray-700">{{spec.key}}: <span class="font-medium">{{spec.value}}</span></span>
+      </div>
+    </div>
+
+    <!-- Tags -->
+    <div *ngIf="cardData.tags && cardData.tags.length > 0" class="flex flex-wrap gap-2 my-4">
+      <span *ngFor="let tag of cardData.tags" 
+            class="px-2 py-1 text-xs rounded-full"
+            [ngClass]="{
+              'bg-yellow-100 text-yellow-800': cardData.cardType === 'service',
+              'bg-yellow-50 text-yellow-800': cardData.cardType === 'category',
+              'bg-orange-100 text-orange-800': cardData.cardType === 'product',
+              'bg-orange-50 text-orange-700': cardData.cardType === 'testimonial'
+            }">
+        {{tag}}
+      </span>
+    </div>
+
+    <!-- Card Footer with Link -->
+    <div *ngIf="cardData.linkText && cardData.linkUrl" class="mt-auto">
+      <a [routerLink]="cardData.linkUrl" [ngClass]="getButtonClasses()" class="inline-block text-center transition-all duration-300 hover:scale-105">
+        {{cardData.linkText}}
+        <svg class="w-4 h-4 ml-1 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>

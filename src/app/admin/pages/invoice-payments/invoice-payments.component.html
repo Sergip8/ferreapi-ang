@@ -1,0 +1,50 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3 class="card-title">{{ title }}</h3>
+            <button class="btn btn-primary" (click)="openModal()">
+              <i class="fas fa-plus"></i> Nuevo Pago de Factura
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <app-filter
+            (filterChange)="onFilterChange($event)"
+          ></app-filter>
+
+          <app-loading *ngIf="loading"></app-loading>
+          <div *ngIf="tableData">
+            <app-table
+              *ngIf="!loading"
+              [columns]="columns"
+              [data]="tableData"
+              [pagination]="pagination"
+              (sortChange)="onSortChange($event)"
+              (pageChange)="onPageChange($event)"
+              (rowClick)="onRowClick($event)"
+              (delete)="onDelete($event)"
+            ></app-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal
+  [isOpen]="isModalOpen"
+  [title]="isEdit ? 'Editar Pago de Factura' : 'Nuevo Pago de Factura'"
+  (close)="closeModal()"
+>
+  <div *ngIf="formSchema">
+    <app-form
+      [formConfig]="formSchema"
+      [formData]="formData"
+      (formSubmit)="onFormSubmit($event)"
+      (formCancel)="onFormCancel($event)"
+    ></app-form>
+  </div>
+</app-modal>

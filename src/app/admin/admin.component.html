@@ -1,0 +1,10 @@
+<div class="flex w-full items-start font-sans bg-slate-100">
+      <app-admin-sidebar (onSidebar)="onSidebar($event)"></app-admin-sidebar>
+    
+      <div class="flex-1">
+        <!-- <app-header></app-header> -->
+        <main [@slideContent]="isSidebar ? 'expanded' : 'collapsed'" class="min-h-screen p-8 dark:bg-zinc-500">
+          <router-outlet></router-outlet>
+        </main>
+      </div>
+    </div>

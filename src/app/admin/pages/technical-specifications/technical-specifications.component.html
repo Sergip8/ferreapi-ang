@@ -1,0 +1,22 @@
+<app-filter (filterChange)="onFilterChange($event)"></app-filter>
+
+<app-table 
+  [columns]="columns"
+  [data]="tableData"
+  [title]="title"
+  (edit)="onEdit($event)"
+  (delete)="onDelete($event)"
+  (createUser)="onCreate()"
+  (pageChange)="onPageChange($event)"
+></app-table>
+
+<app-modal [isOpen]="isModalOpen" [title]="modalTitle" (closeModal)="closeModal()">
+  <div class="p-6">
+    <app-form 
+      [formConfig]="formSchema" 
+      [formData]="formData" 
+      (formSubmit)="onFormSubmit($event)" 
+      (formCancel)="onFormCancel()"
+    ></app-form>
+  </div>
+</app-modal>

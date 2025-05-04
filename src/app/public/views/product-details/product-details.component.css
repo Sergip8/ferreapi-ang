@@ -1,0 +1,83 @@
+/* Estilos adicionales específicos que no se pueden lograr con Tailwind */
+:host {
+  display: block;
+  margin: 0 auto;
+}
+
+/* Animación para los tabs */
+button.border-b-2 {
+  transition: all 0.3s ease;
+}
+
+/* Estilos para hover en cards */
+.bg-gradient-to-br:hover {
+  box-shadow: 0 10px 15px -3px rgba(251, 146, 60, 0.3);
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
+}
+
+/* Estilos para el botón de agregar al carrito */
+button.bg-yellow-400:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(251, 191, 36, 0.4);
+}
+
+/* Estilos para la imagen */
+.h-64 img {
+  transition: transform 0.3s ease;
+}
+
+.h-64:hover img {
+  transform: scale(1.05);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación para el toast */
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out, fadeOut 0.5s ease-in 2.5s forwards;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Estilos para el input number (quitar flechas) */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}

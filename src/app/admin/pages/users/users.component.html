@@ -1,0 +1,44 @@
+
+
+<app-filter 
+  [roles]="roles"
+  [isRole]="true"
+  [sortFields]="sortFields"
+  (filterChange)="onFilterChange($event)"
+></app-filter>
+
+@if (tableData) {
+    <app-table 
+      [columns]="UserColumns"
+      [data]="tableData"
+      [loading]="loading"
+      [count]="pagination.count"
+      [title]="'Usuarios'"
+      (rowClick)="onUserClick($event)"
+      (sortChange)="onSortChange($event)"
+      (edit)="onEdit($event)"
+      (delete)="onDelete($event)"
+      (onCheckbox)="onCheckbox($event)"
+      (pageChange)="onPageChange($event)"
+      (createUser)="onCreateUser()"
+    ></app-table>
+}
+
+<app-modal [isOpen]="isModalOpen" [title]="modalTitle" (closeModal)="closeModal()">
+    <app-loading *ngIf="loading"></app-loading>
+    <div class="p-6">
+        @if (formData) {
+            <h1 class="text-2xl font-bold text-blue-900 mb-6"></h1>
+            <div class="max-w-3xl mx-auto p-6">
+                <h2 class="text-2xl font-bold text-sky-900 mb-6">{{title}} Information</h2>
+                <app-form 
+                    [formConfig]="formSchema" 
+                    [formData]="formData" 
+                    (formSubmit)="onFormSubmit($event)" 
+                    (formCancel)="onFormCancel($event)"
+                   
+                ></app-form>
+            </div>
+        }
+    </div>
+</app-modal>

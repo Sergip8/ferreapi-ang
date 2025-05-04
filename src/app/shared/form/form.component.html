@@ -1,0 +1,208 @@
+<div [class]="'p-4 ' + (nestingLevel > 0 ? 'pl-6 border-l-2 border-gray-200 mt-4' : '')">
+  <h3 *ngIf="sectionTitle" class="text-xl font-semibold mb-4 text-gray-800">{{ sectionTitle }}</h3>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+    <ng-container *ngFor="let key of fieldKeys">
+      <!-- Skip nested objects -->
+      <ng-container *ngIf="!nestedObjects[key]">
+        <!-- Regular field rendering -->
+        <div class="mb-4" [ngClass]="{'border-red-500': isFieldInvalid(key)}">
+          <label [for]="key" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ getFieldLabel(key) }}
+            <span class="text-red-500 ml-1" *ngIf="formFields[key]?.required">*</span>
+          </label>
+
+          <!-- Text input -->
+          <input *ngIf="getFieldType(key) === fieldTypes.TEXT" 
+                 [type]="fieldTypes.TEXT"
+                 [id]="key"
+                 [formControlName]="key"
+                 class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+          <!-- Number input -->
+          <input *ngIf="getFieldType(key) === fieldTypes.NUMBER" 
+                 [type]="fieldTypes.NUMBER"
+                 [id]="key"
+                 [formControlName]="key"
+                 class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+          <!-- Email input -->
+          <input *ngIf="getFieldType(key) === fieldTypes.EMAIL" 
+                 [type]="fieldTypes.EMAIL"
+                 [id]="key"
+                 [formControlName]="key"
+                 class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+          <!-- Password input -->
+          <input *ngIf="getFieldType(key) === fieldTypes.PASSWORD" 
+                 [type]="fieldTypes.PASSWORD"
+                 [id]="key"
+                 [formControlName]="key"
+                 class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+          <!-- Tel input -->
+          <input *ngIf="getFieldType(key) === fieldTypes.TEL" 
+                 [type]="fieldTypes.TEL"
+                 [id]="key"
+                 [formControlName]="key"
+                 class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+          <!-- URL input -->
+          <input *ngIf="getFieldType(key) === fieldTypes.URL" 
+                 [type]="fieldTypes.URL"
+                 [id]="key"
+                 [formControlName]="key"
+                 class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+          <!-- Textarea input -->
+          <textarea *ngIf="getFieldType(key) === fieldTypes.TEXTAREA" 
+                    [id]="key"
+                    [formControlName]="key"
+                    class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-24"></textarea>
+
+          <!-- Select input -->
+          <select *ngIf="getFieldType(key) === fieldTypes.SELECT" 
+                  [id]="key"
+                  [formControlName]="key"
+                  class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+            <option value="">Select an option</option>
+            <option *ngFor="let option of getFieldOptions(key)" 
+                    [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+
+          <!-- Checkbox input -->
+          <div *ngIf="getFieldType(key) === fieldTypes.CHECKBOX" class="flex items-center">
+            <input [type]="fieldTypes.CHECKBOX"
+                   [id]="key"
+                   [formControlName]="key"
+                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+            <label [for]="key" class="ml-2 block text-sm text-gray-900">
+              {{ getFieldLabel(key) }}
+            </label>
+          </div>
+
+          <!-- Radio input -->
+          <div *ngIf="getFieldType(key) === fieldTypes.RADIO" class="space-y-2">
+            <div *ngFor="let option of getFieldOptions(key)" class="flex items-center">
+              <input [type]="fieldTypes.RADIO"
+                     [name]="key"
+                     [id]="key + '_' + option.value"
+                     [value]="option.value"
+                     [formControlName]="key"
+                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+              <label [for]="key + '_' + option.value" class="ml-2 block text-sm text-gray-900">
+                {{ option.label }}
+              </label>
+            </div>
+          </div>
+
+          <!-- Date input -->
+          <input *ngIf="getFieldType(key) === fieldTypes.DATE" 
+                 [type]="fieldTypes.DATE"
+                 [id]="key"
+                 [formControlName]="key"
+                 class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+          <!-- Time input -->
+          <input *ngIf="getFieldType(key) === fieldTypes.TIME" 
+                 [type]="fieldTypes.TIME"
+                 [id]="key"
+                 [formControlName]="key"
+                 class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+          <!-- File input -->
+          <input *ngIf="getFieldType(key) === fieldTypes.FILE" 
+                 [type]="fieldTypes.FILE"
+                 [id]="key"
+                 [formControlName]="key"
+                 class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          
+          <!-- Object Properties input -->
+          <div *ngIf="getFieldType(key) === fieldTypes.OBJECT_PROPERTIES" [formGroupName]="key" class="border rounded-md p-4 bg-gray-50">
+            <div class="text-sm text-gray-500 mb-3">Propiedades del objeto</div>
+            <div class="space-y-3">
+              <ng-container *ngFor="let prop of formFields[key].properties">
+                <!-- Text property -->
+                <div *ngIf="prop.type === 'text'" class="flex flex-col">
+                  <label [for]="key + '_' + prop.key" class="text-xs font-medium text-gray-700 mb-1">
+                    {{ prop.label }}
+                    <span *ngIf="prop.required" class="text-red-500">*</span>
+                  </label>
+                  <input 
+                    [type]="'text'"
+                    [id]="key + '_' + prop.key"
+                    [formControlName]="prop.key"
+                    class="w-full px-3 py-1 border rounded-md shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <!-- Select property -->
+                <div *ngIf="prop.type === 'select'" class="flex flex-col">
+                  <label [for]="key + '_' + prop.key" class="text-xs font-medium text-gray-700 mb-1">
+                    {{ prop.label }}
+                    <span *ngIf="prop.required" class="text-red-500">*</span>
+                  </label>
+                  <select
+                    [id]="key + '_' + prop.key"
+                    [formControlName]="prop.key"
+                    class="w-full px-3 py-1 border rounded-md shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                    <option value="">Seleccionar</option>
+                    <option *ngFor="let option of prop.options" [value]="option.value">
+                      {{ option.label }}
+                    </option>
+                  </select>
+                </div>
+                
+                <!-- Checkbox property -->
+                <div *ngIf="prop.type === 'checkbox'" class="flex items-center">
+                  <input 
+                    type="checkbox"
+                    [id]="key + '_' + prop.key"
+                    [formControlName]="prop.key"
+                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                  <label [for]="key + '_' + prop.key" class="ml-2 block text-sm text-gray-700">
+                    {{ prop.label }}
+                  </label>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <!-- Error message display -->
+          <div *ngIf="isFieldInvalid(key)" class="mt-1 text-sm text-red-600">
+            {{ getErrorMessage(key) }}
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <!-- Nested form objects -->
+    <ng-container *ngFor="let key of getNestedObjectKeys()">
+      <div class="mt-6 border-t pt-4">
+        <app-form
+          [formConfig]="nestedObjects[key].config"
+          [formData]="nestedObjects[key].data"
+          [sectionTitle]="getSectionTitle(key)"
+          [nestingLevel]="nestingLevel + 1"
+          (formSubmit)="handleNestedFormSubmit(key, $event)"
+          [submitButtonText]="''"
+          [showCancelButton]="false">
+        </app-form>
+      </div>
+    </ng-container>
+
+    <!-- Form buttons -->
+    <div *ngIf="submitButtonText || showCancelButton" class="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-200">
+      <button *ngIf="showCancelButton" type="button" 
+              class="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              (click)="onCancel()">
+        {{ cancelButtonText }}
+      </button>
+      <button *ngIf="submitButtonText" type="submit"
+              class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        {{ submitButtonText }}
+      </button>
+    </div>
+  </form>
+</div>

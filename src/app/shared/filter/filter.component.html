@@ -1,0 +1,45 @@
+<div class="filter-container">
+  <form [formGroup]="filterForm" class="filter-form">
+    <!-- Search Input -->
+    <div class="filter-group">
+      <input 
+        type="text" 
+        formControlName="search" 
+        placeholder="Search..." 
+        class="search-input"
+      >
+    </div>
+
+    <!-- Sort Dropdown -->
+    <div class="filter-group">
+      <select formControlName="sort" class="sort-select">
+        <option value="">Sort by...</option>
+        <option *ngFor="let field of sortFields" [value]="field.value">{{field.label}}</option>
+     
+      </select>
+    </div>
+
+    <!-- Order Toggle -->
+    <div class="filter-group">
+      <button 
+        type="button" 
+        (click)="onOrderChange()" 
+        class="order-button"
+        [class.asc]="filterForm.get('order')?.value === 'ASC'"
+        [class.desc]="filterForm.get('order')?.value === 'DESC'"
+      >
+        {{ filterForm.get('order')?.value === 'ASC' ? '↑' : '↓' }}
+      </button>
+    </div>
+
+    <!-- Role Filter -->
+    <div *ngIf="isRole" class="filter-group">
+      <select formControlName="role" class="role-select">
+        <option value="">All Roles</option>
+        <option *ngFor="let role of roles" [value]="role">
+          {{ role }}
+        </option>
+      </select>
+    </div>
+  </form>
+</div> 
