@@ -9,6 +9,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { CartComponent } from '../shared/cart/cart.component';
 import { ContactComponent } from './views/contact/contact.component';
 import { AboutComponent } from './views/about/about.component';
+import { ProductResolver } from '../_core/resolvers/product-resolver';
 
 
 
@@ -55,6 +56,18 @@ const routes: Routes = [
     path: PublicRoutes.About,
     title: 'about',
     component: AboutComponent,
+  },
+   {
+    path: 'details/:id',
+    component: ProductDetailComponent,
+    resolve: {
+      productData: ProductResolver
+    },
+    data: {
+    
+      title: 'Product Details',
+      description: 'View detailed product information'
+    }
   },
 ];
 

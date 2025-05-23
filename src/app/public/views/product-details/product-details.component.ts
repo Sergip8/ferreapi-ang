@@ -37,19 +37,38 @@ export class ProductDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Obtener el ID del producto desde la ruta
+    // Obtener datos del resolver
+    this.route.data.subscribe(data => {
+      const { productData } = data;
+      if (productData) {
+        this.productId = productData.productId;
+        
+        if (productData.product) {
+          // Datos ya cargados por el resolver (SSR)
+          this.product = productData.product;
+          this.isLoading = false;
+        }
+        
+        // En el cliente, cargar datos adicionales
+        if (isPlatformBrowser(this.platformId)) {
+          if (!this.product) {
+            this.productDetails();
+          }
+          this.getSuggestedProducts();
+          this.checkAuthClaims();
+        }
+      }
+    });
+
+    // Fallback para parámetros directos
     this.route.params.subscribe(param => {
-      if (param['id']) {
+      if (param['id'] && !this.productId) {
         this.productId = Number(param['id']);
         
-        // Solo hacer llamadas HTTP en el cliente
         if (isPlatformBrowser(this.platformId)) {
           this.productDetails();
           this.getSuggestedProducts();
           this.checkAuthClaims();
-        } else {
-          // En el servidor, establecer estado inicial
-          this.isLoading = false;
         }
       }
     });
