@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../_core/services/product.service';
 import { Product, ProductCard } from '../../../models/product';
@@ -10,6 +10,7 @@ import { ProductDetailsLoadingComponent } from '../../components/loading/product
 import { AuthService } from '../../../_core/services/auth.service';
 import { CartService } from '../../../_core/services/cart.service';
 import { FormsModule } from '@angular/forms';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-product-detail',
@@ -31,21 +32,36 @@ export class ProductDetailComponent implements OnInit {
     private productService: ProductService,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private cartService: CartService
-  ) {
-    
-  }
+    private cartService: CartService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
+    // Obtener el ID del producto desde la ruta
     this.route.params.subscribe(param => {
       if (param['id']) {
         this.productId = Number(param['id']);
-        this.productDetails();
-        this.getSuggestedProducts();
+        
+        // Solo hacer llamadas HTTP en el cliente
+        if (isPlatformBrowser(this.platformId)) {
+          this.productDetails();
+          this.getSuggestedProducts();
+          this.checkAuthClaims();
+        } else {
+          // En el servidor, establecer estado inicial
+          this.isLoading = false;
+        }
       }
     });
-    const claims = this.authService.getTokenClaims();
-    console.log(claims);
+  }
+
+  private checkAuthClaims(): void {
+    try {
+      const claims = this.authService.getTokenClaims();
+      console.log(claims);
+    } catch (error) {
+      console.error('Error getting token claims:', error);
+    }
   }
 
   setActiveTab(tab: string): void {
@@ -64,15 +80,16 @@ export class ProductDetailComponent implements OnInit {
   }
 
   productDetails() {
-    if (this.productId) {
+    if (this.productId && isPlatformBrowser(this.platformId)) {
       this.isLoading = true;
       this.productService.getProductDetails(this.productId).subscribe({
         next: data => {
           this.product = data;
-          console.log(this.product)
+          console.log(this.product);
           this.isLoading = false;
         },
-        error: () => {
+        error: (error) => {
+          console.error('Error loading product details:', error);
           this.isLoading = false;
         }
       });
@@ -86,6 +103,8 @@ export class ProductDetailComponent implements OnInit {
   }
 
   getSuggestedProducts() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    
     this.productService.getProductSuggested(this.productId).subscribe({
       next: data => {
         this.suggested = data.data.map((product: ProductCard) => ({
@@ -98,13 +117,16 @@ export class ProductDetailComponent implements OnInit {
           imageSrc: product.image_url,
           cardType: 'product'
         } as CardModel));
+      },
+      error: (error) => {
+        console.error('Error loading suggested products:', error);
       }
     });
   }
+
   toggleQuantitySelector(): void {
     this.showQuantitySelector = !this.showQuantitySelector;
     if (this.showQuantitySelector) {
-      // Reset quantity when opening selector
       this.quantity = 1;
     }
   }
@@ -122,6 +144,8 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToCart(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    
     if (this.product && this.isAvailable() && this.quantity > 0) {
       this.cartService.addToCart({
         product_id: this.product.product_id,
@@ -131,13 +155,11 @@ export class ProductDetailComponent implements OnInit {
         image_url: this.product.image_url
       });
       
-      // Mostrar toast de confirmación
       this.showToast = true;
       setTimeout(() => {
         this.showToast = false;
       }, 3000);
       
-      // Cerrar el selector de cantidad
       this.showQuantitySelector = false;
     }
   }
