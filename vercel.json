@@ -1,6 +1,28 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "dist/pipe-web/server/server.mjs",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "dist/pipe-web/browser/**",
+      "use": "@vercel/static"
+    }
+  ],
   "routes": [
-    { "src": "^/dist/cbb_locales/browser/(.*)$", "dest": "/dist/cbb_locales/browser/$1" },
-    { "src": "^/(?!api|_next|static|.*\\.(js|css|svg|png|jpg|jpeg|gif|ico|woff|woff2|ttf|eot|json|geojson)$)(.*)$", "dest": "/dist/pipe-web/browser/index.html" }
-  ]
+    {
+      "src": "/.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)",
+      "dest": "/dist/pipe-web/browser/$0"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/dist/pipe-web/server/server.mjs"
+    }
+  ],
+  "functions": {
+    "dist/pipe-web/server/server.mjs": {
+      "includeFiles": "dist/pipe-web/**"
+    }
+  }
 }
