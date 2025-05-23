@@ -13,13 +13,13 @@ import { Router } from "@angular/router";
     selector: 'app-pagination',
     imports: [NgFor, NgIf],
     template: `
-   <nav *ngIf="pageData && pageData.count != 0" aria-label="Pagination">
+  <nav *ngIf="pageData && pageData.count != 0" aria-label="Pagination">
    <div class="flex justify-center items-center gap-2 my-4">
  
   <button 
     (click)="goToPage(pageData.page - 1)" 
     [disabled]="pageData.page <= 1" 
-    class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:bg-gray-100 disabled:text-gray-400">
+    class="px-4 py-2 bg-yellow-300 text-orange-700 rounded hover:bg-yellow-300 disabled:bg-yellow-50 disabled:text-orange-500">
     Anterior
   </button>
 
@@ -27,22 +27,22 @@ import { Router } from "@angular/router";
     <button 
     *ngIf="p !== '...'; else dots" 
       (click)="goToPage(p)" 
-      [class.bg-blue-500]="p === pageData.page" 
+      [class.bg-orange-500]="p === pageData.page" 
       [class.text-white]="p === pageData.page" 
-      [class.bg-gray-200]="p !== pageData.page" 
-      [class.text-gray-700]="p !== pageData.page" 
-      class="px-4 py-2 rounded hover:bg-blue-400 hover:text-white">
+      [class.bg-yellow-200]="p !== pageData.page" 
+      [class.text-orange-700]="p !== pageData.page" 
+      class="px-4 py-2 rounded hover:bg-orange-400 hover:text-white font-semibold">
       {{ p }}
     </button>
     <ng-template #dots>
-      <span class="px-2 py-2 text-gray-500">...</span>
+      <span class="px-2 py-2 text-orange-400 ">...</span>
     </ng-template>
   </ng-container>
 
   <button 
     (click)="goToPage(pageData.page + 1)" 
     [disabled]="pageData.page >= totalPages" 
-    class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:bg-gray-100 disabled:text-gray-400">
+    class="px-4 py-2 bg-yellow-300 text-orange-700 rounded hover:bg-yellow-300 disabled:bg-yellow-50 disabled:text-orange-500">
     Siguiente
   </button>
 </div>
