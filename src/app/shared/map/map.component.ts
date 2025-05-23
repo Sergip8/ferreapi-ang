@@ -37,7 +37,7 @@ export class MapsComponent implements AfterViewInit, OnDestroy {
   // Inyectamos PLATFORM_ID para verificar si estamos en el navegador o en el servidor
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
-  ngAfterViewInit(): void {
+   ngAfterViewInit(): void {
    
     if (isPlatformBrowser(this.platformId)) {
         // Retraso para asegurarnos que el DOM esté completamente listo
@@ -45,7 +45,7 @@ export class MapsComponent implements AfterViewInit, OnDestroy {
           this.initializeLeaflet().then(() => {
             this.initMap();
           });
-        }, 0);
+        }, 200);
       }
   }
   ngOnDestroy(): void {
