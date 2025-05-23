@@ -58,7 +58,10 @@
                   "replace": "src/environments/environment.development.ts",
                   "with": "src/environments/environment.ts"
                 }
-              ]
+              ],
+               "outputPath": "dist/pipe-web/browser",
+              "baseHref": "/",
+              "deployUrl": "/"
             },
             "development": {
               "optimization": false,
