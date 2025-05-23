@@ -33,6 +33,10 @@ export class ProductDetailComponent implements OnInit {
     private authService: AuthService,
     private cartService: CartService
   ) {
+    
+  }
+
+  ngOnInit(): void {
     this.route.params.subscribe(param => {
       if (param['id']) {
         this.productId = Number(param['id']);
@@ -40,9 +44,6 @@ export class ProductDetailComponent implements OnInit {
         this.getSuggestedProducts();
       }
     });
-  }
-
-  ngOnInit(): void {
     const claims = this.authService.getTokenClaims();
     console.log(claims);
   }
