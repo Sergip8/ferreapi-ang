@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://manga-translator-dmme.onrender.com'
+  API_URL: 'https://manga-translator-dmme.onrender.com'
 };
