@@ -74,6 +74,25 @@
           },
           "defaultConfiguration": "production"
         },
+          "prerender": {
+          "builder": "@angular-devkit/build-angular:prerender",
+          "options": {
+            "routes": [
+              "/",
+              "/catalog",
+              "/contact",
+              "/about",
+              "/login",
+              "/register"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "your-app-name:build:production",
+              "serverTarget": "your-app-name:server:production"
+            }
+          }
+        },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
@@ -116,3 +135,4 @@
     }
   }
 }
+
