@@ -14,26 +14,52 @@ import { SafeHtmlPipe } from '../../../_core/pipes/safe-html.pipe';
 export class CardComponent {
 
   @Input() cardData!: CardModel;
+  @Input() horizontal: boolean = false; 
   @Output() onClickCard = new EventEmitter()
 
   // Helper method to get the card style class based on type
   getCardClasses(): string {
     const baseClasses = 'rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300 ';
+    const layoutClasses = this.horizontal ? 'flex-row' : 'flex-col h-full';
 
     switch(this.cardData.cardType) {
       case 'product':
-        return `${baseClasses} from-gray-50 to-gray-100 border border-orange-500 w-full`;
+        return `${baseClasses} ${layoutClasses} from-gray-50 to-gray-100 border border-orange-500 w-full`;
       case 'category':
-        return `${baseClasses} bg-gradient-to-br from-orange-50 to-orange-100 border-l-4 border-orange-500 w-full`;
+        return `${baseClasses} ${layoutClasses} bg-gradient-to-br from-orange-50 to-orange-100 border-l-4 border-orange-500 w-full`;
       case 'service':
-        return `${baseClasses} bg-white border border-yellow-200 `;
+        return `${baseClasses} ${layoutClasses} bg-white border border-yellow-200 `;
       case 'testimonial':
-        return `${baseClasses} border border-orange-200 bg-yellow-100 `;
+        return `${baseClasses} ${layoutClasses} border border-orange-200 bg-yellow-100 `;
       case 'values':
-        return `${baseClasses} border border-gray-100 bg-gray-50 text-center`;
+        return `${baseClasses} ${layoutClasses} border border-gray-100 bg-gray-50 text-center`;
       default:
-        return `${baseClasses} bg-white border border-gray-200 w-[300px]`;
+        return `${baseClasses} ${layoutClasses} bg-white border border-gray-200 w-[300px]`;
     }
+  }
+
+  // Helper method para obtener las clases del contenedor de imagen
+  getImageContainerClasses(): string {
+    if (this.horizontal) {
+      return 'w-48 flex-shrink-0'; // Ancho fijo en modo horizontal
+    }
+    return 'text-center w-full flex justify-center items-center';
+  }
+
+  // Helper method para obtener las clases de la imagen
+  getImageClasses(): string {
+    if (this.horizontal) {
+      return 'w-full h-full object-cover';
+    }
+    return 'w-full object-cover min-w-full h-auto';
+  }
+
+  // Helper method para obtener las clases del contenedor de contenido
+  getContentContainerClasses(): string {
+    if (this.horizontal) {
+      return 'p-3 flex flex-col flex-grow justify-between';
+    }
+    return 'p-3 flex flex-col flex-grow';
   }
 
   // Helper method to get button style class based on type

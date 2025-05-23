@@ -1,26 +1,26 @@
-<div class="container mx-auto h-screen">
+<div class="container mx-auto min-h-[78vh]">
   <ng-container *ngIf="!isLoading; else loading">
     <!-- Section 1: Product Main Info -->
     <div class="bg-white py-8 w-full">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Image -->
-        <div class="flex justify-center items-center bg-gray-100 p-8 rounded">
+        <div class="flex justify-center items-center bg-gray-100 rounded">
           <img
-            [src]="product?.image_url"
-            [alt]="product?.name"
-            class="max-h-96 object-contain"
+            [src]="product.image_url_details"
+            [alt]="product.name"
+            class=" object-cover max-h-96 w-full"
           />
         </div>
     
         <!-- Info -->
         <div class="flex flex-col justify-between text-gray-800">
           <div>
-            <h1 class="text-3xl font-bold mb-3">{{ product?.name }}</h1>
-            <p class="mb-4 text-gray-600">{{ product?.description }}</p>
+            <h1 class="text-3xl font-bold mb-3">{{ product.name }}</h1>
+            <p class="mb-4 text-gray-600">{{ product.description }}</p>
             
             <div class="flex items-center justify-between mb-4 bg-gray-100 p-4 rounded">
               <div class="text-2xl font-bold text-orange-600">
-                ${{ product?.regular_price }}
+                ${{ product.regular_price }}
               </div>
               
               <span
@@ -36,11 +36,11 @@
     
             <div class="border-t border-gray-200 pt-3 mb-4">
               <p class="text-sm text-gray-500">
-                <span class="font-medium text-gray-700">Marca:</span> {{ product?.brand_name }}
+                <span class="font-medium text-gray-700">Marca:</span> {{ product.brand_name }}
               </p>
               <p class="text-sm text-gray-500">
                 <span class="font-medium text-gray-700">Categoría:</span> 
-                {{ product?.parent_category_name }} / {{ product?.category_name }}
+                {{ product.parent_category_name }} / {{ product.category_name }}
               </p>
             </div>
           </div>
@@ -82,13 +82,13 @@
                   type="number" 
                   [(ngModel)]="quantity" 
                   min="1" 
-                  [max]="product?.inventory?.available_quantity || 999"
+                  [max]="product.inventory.available_quantity || 999"
                   class="w-16 text-center py-2 border-x border-gray-300 focus:outline-none"
                 >
                 
                 <button 
                   (click)="increaseQuantity()" 
-                  [disabled]="quantity >= (product?.inventory?.available_quantity || 999)"
+                  [disabled]="quantity >= (product.inventory.available_quantity || 999)"
                   class="px-3 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 transition-colors"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -180,7 +180,7 @@
       <!-- Tab Content -->
       <div class="p-8 bg-white min-h-40">
         <ng-container *ngIf="selectedTab === 'description'">
-          <p class="text-gray-700">{{ product?.description }}</p>
+          <p class="text-gray-700">{{ product.description }}</p>
         </ng-container>
 
         <ng-container *ngIf="selectedTab === 'attributes'">
@@ -188,25 +188,25 @@
             <div class="bg-gray-50 p-4 rounded border-l-4 border-orange-500">
               <div class="flex items-center">
                 <span class="w-28 text-gray-700 font-medium">Color:</span>
-                <span>{{ product?.attributes?.color }}</span>
+                <span>{{ product.attributes.color }}</span>
               </div>
             </div>
             <div class="bg-gray-50 p-4 rounded border-l-4 border-orange-500">
               <div class="flex items-center">
                 <span class="w-28 text-gray-700 font-medium">Tipo de Uso:</span>
-                <span>{{ product?.attributes?.tipo_uso }}</span>
+                <span>{{ product.attributes.tipo_uso }}</span>
               </div>
             </div>
             <div class="bg-gray-50 p-4 rounded border-l-4 border-orange-500">
               <div class="flex items-center">
                 <span class="w-28 text-gray-700 font-medium">Certificado:</span>
-                <span>{{ product?.attributes?.certificado ? 'Sí' : 'No' }}</span>
+                <span>{{ product.attributes.certificado ? 'Sí' : 'No' }}</span>
               </div>
             </div>
             <div class="bg-gray-50 p-4 rounded border-l-4 border-orange-500">
               <div class="flex items-center">
                 <span class="w-28 text-gray-700 font-medium">Resistencia UV:</span>
-                <span>{{ product?.attributes?.resistencia_uv ? 'Sí' : 'No' }}</span>
+                <span>{{ product.attributes.resistencia_uv ? 'Sí' : 'No' }}</span>
               </div>
             </div>
           </div>
@@ -217,27 +217,27 @@
             <ul class="space-y-4 divide-y divide-gray-200">
               <li class="py-2">
                 <span class="text-gray-800 font-medium block mb-1">Uso recomendado:</span>
-                <span class="text-gray-700">{{ product?.technical_specs?.usage_recommendations }}</span>
+                <span class="text-gray-700">{{ product.technical_specs.usage_recommendations }}</span>
               </li>
               <li class="py-2">
                 <span class="text-gray-800 font-medium block mb-1">Guía de instalación:</span>
-                <span class="text-gray-700">{{ product?.technical_specs?.installation_guidelines }}</span>
+                <span class="text-gray-700">{{ product.technical_specs.installation_guidelines }}</span>
               </li>
               <li class="py-2">
                 <span class="text-gray-800 font-medium block mb-1">Norma:</span>
-                <span class="text-gray-700">{{ product?.technical_specs?.standard_compliance }}</span>
+                <span class="text-gray-700">{{ product.technical_specs.standard_compliance }}</span>
               </li>
               <li class="py-2">
                 <span class="text-gray-800 font-medium block mb-1">Certificación:</span>
-                <span class="text-gray-700">{{ product?.technical_specs?.certification_details }}</span>
+                <span class="text-gray-700">{{ product.technical_specs.certification_details }}</span>
               </li>
               <li class="py-2">
                 <span class="text-gray-800 font-medium block mb-1">Seguridad:</span>
-                <span class="text-gray-700">{{ product?.technical_specs?.safety_information }}</span>
+                <span class="text-gray-700">{{ product.technical_specs.safety_information }}</span>
               </li>
               <li class="pt-4">
                 <a
-                  [href]="product?.technical_specs?.technical_drawing_url"
+                  [href]="product.technical_specs.technical_drawing_url"
                   target="_blank"
                   class="inline-flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded"
                 >
@@ -261,7 +261,7 @@
             <div>
               <span class="text-gray-700 font-medium block">Inventario disponible:</span>
               <span class="text-2xl font-bold text-gray-800">
-                {{ product?.inventory?.available_quantity }} unidades
+                {{ product.inventory.available_quantity }} unidades
               </span>
             </div>
           </div>

@@ -27,6 +27,7 @@ export class ProductCatalogComponent implements OnInit {
   public products$ = new Observable<CardModel[]>();
   showMobileFilters = false;
   isLoading = true;
+  isHorizontal = false
 
   constructor(private productService: ProductService, private commonService: CommonService, private route: ActivatedRoute, private router: Router) {
     this.route.queryParams.pipe(
@@ -141,6 +142,10 @@ export class ProductCatalogComponent implements OnInit {
       queryParams: {},
       queryParamsHandling: 'merge'
     });
+  }
+  onViewModeChange(mode: 'grid' | 'list'){
+    this.isHorizontal = mode == "list"
+
   }
 
 }

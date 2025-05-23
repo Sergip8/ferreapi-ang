@@ -38,7 +38,7 @@ export class PublicHeaderComponent {
  
   
   navigation = [
-    { name: 'Products', path: '/products' },
+    { name: 'Products', path: '/catalog' },
     { name: 'Projects', path: '/projects' },
    // { name: 'Resources', path: '/resources' },
     { name: 'About', path: '/about' },

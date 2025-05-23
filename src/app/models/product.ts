@@ -77,6 +77,7 @@ export interface Product {
   brand_id: number;
   unit_of_measure: string;
   image_url: string;
+  image_url_details: string;
   status: string;
   category_id: number;
   subcategory_id: number;
