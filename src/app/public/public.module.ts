@@ -20,14 +20,18 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { GridLoadingComponent } from './components/loading/grid-loading.component';
 import { ProductDetailComponent } from './views/product-details/product-details.component';
 import { ProductDetailsLoadingComponent } from './components/loading/product-details-loading.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ContactComponent } from './views/contact/contact.component';
+import { MapsComponent } from '../shared/map/map.component';
+import { AboutComponent } from './views/about/about.component';
+import { SocialButtonsComponent } from '../shared/social-buttons/social-buttons';
 
 
 
 
 
 @NgModule({
-  declarations: [PublicComponent, PublicHomeComponent, ProductCatalogComponent, ProductDetailComponent],
+  declarations: [PublicComponent, PublicHomeComponent, ProductCatalogComponent, ProductDetailComponent, ContactComponent, AboutComponent],
   imports: [
     CommonModule,
     PublicHeaderComponent,
@@ -45,7 +49,10 @@ import { FormsModule } from '@angular/forms';
     NotFoundComponent,
     GridLoadingComponent,
     ProductDetailsLoadingComponent,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    MapsComponent,
+    SocialButtonsComponent
 ]
 })
 export class PublicModule {}

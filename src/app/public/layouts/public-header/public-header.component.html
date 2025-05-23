@@ -9,9 +9,10 @@
           <img src="assets/logo.svg" alt="PVC Supply Co." class="h-10 w-auto">
           <span class="ml-3 text-2xl font-bold text-brand-red-500 cursor-pointer hidden sm:inline">PVC Supply Co.</span>
         </div>
-
+        
         <!-- Navigation Links - 4/12 (center, md+ only) -->
-        <div class="hidden md:flex col-span-4 justify-center space-x-6">
+        <div class="hidden md:flex col-span-4 justify-end space-x-6">
+          
           <a *ngFor="let nav of navigation" 
              [routerLink]="nav.path" 
              class="text-gray-700 hover:text-brand-red-500 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-white hover:shadow-sm"
@@ -108,4 +109,5 @@
       </div>
     </div>
   </nav>
+  <app-cat-menu></app-cat-menu>
 </header>

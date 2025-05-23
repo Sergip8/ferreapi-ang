@@ -7,6 +7,7 @@ import { ProductService } from '../../../_core/services/product.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { slideDownUp } from '../../../shared/utils/animations';
 import { CartService } from '../../../_core/services/cart.service';
+import { CatMenuComponent } from '../../../shared/cat-menu/cat-menu.component';
 
 interface Product {
   product_id: number;
@@ -20,7 +21,7 @@ interface Product {
 
 @Component({
   selector: 'app-public-header',
-  imports: [RouterLink, NgFor, FormsModule, NgIf],
+  imports: [RouterLink, NgFor, FormsModule, NgIf, CatMenuComponent],
   templateUrl: './public-header.component.html',
   styleUrl: './public-header.component.css',
   animations: [slideDownUp]
@@ -33,6 +34,7 @@ export class PublicHeaderComponent {
   searchResults: Product[] = [];
   publicRoutes = PublicRoutes;
   showTopSection = true;
+  showCatMenu = false;
  
   
   navigation = [

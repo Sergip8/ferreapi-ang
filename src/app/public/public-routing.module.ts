@@ -7,6 +7,8 @@ import { ProductDetailComponent } from './views/product-details/product-details.
 import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
 import { CartComponent } from '../shared/cart/cart.component';
+import { ContactComponent } from './views/contact/contact.component';
+import { AboutComponent } from './views/about/about.component';
 
 
 
@@ -35,6 +37,7 @@ const routes: Routes = [
   },
    {
     path: PublicRoutes.Details,
+   
     title: 'details',
     component: ProductDetailComponent,
   },
@@ -42,6 +45,16 @@ const routes: Routes = [
     path: PublicRoutes.Cart,  
     title: 'cart',
     component: CartComponent,
+  },
+  {
+    path: PublicRoutes.Contact,
+    title: 'contact',
+    component: ContactComponent,
+  },
+  {
+    path: PublicRoutes.About,
+    title: 'about',
+    component: AboutComponent,
   },
 ];
 

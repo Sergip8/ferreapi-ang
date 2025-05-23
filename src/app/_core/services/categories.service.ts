@@ -32,4 +32,7 @@ export class CategoriesService {
   deleteCategory(id: number): Observable<any> {
     return this.http.delete<any>(baseUrl + 'categories/' + id);
   }
+  GetMainCategories(){
+    return this.http.get<Category[]>(baseUrl+ 'categories/main')
+  }
 }

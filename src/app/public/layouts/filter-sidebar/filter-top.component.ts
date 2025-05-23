@@ -22,7 +22,7 @@ interface SortOption {
   selector: 'app-filter-top',
   imports:[CommonModule, FormsModule],
   template: `
-  <div class="filter-top bg-white shadow-sm rounded-lg p-4 mb-6">
+  <div class="filter-top bg-white shadow-sm border border-gray-200 rounded-lg p-4 mb-6">
   <div class="container mx-auto">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <!-- Left section with filter counts and active filters -->

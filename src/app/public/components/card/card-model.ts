@@ -1,12 +1,13 @@
 export interface CardModel {
   id: number
-  cardType: 'product' | 'category' | 'service' | 'testimonial';
+  cardType: 'product' | 'category' | 'service' | 'testimonial' | 'values';
   title: string;
   subtitle?: string;
   brand?: string
   brandLogo?: string
   verified?: boolean
   description?: string;
+  icon?: {icon: string, bgColor: string, color: string};
   imageSrc?: string;
   imageAlt?: string;
   featured?: boolean;

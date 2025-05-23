@@ -1,0 +1,140 @@
+<div class="bg-white min-h-screen">
+    <!-- Hero Section -->
+    <section class="relative bg-orange-500 py-20">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">PVC Supply Co.</h1>
+          <p class="text-xl text-white mb-8">Your trusted partner for quality hardware solutions since 2010</p>
+          <div class="bg-yellow-400 h-1 w-24 mx-auto"></div>
+        </div>
+      </div>
+      <div class="absolute bottom-0 left-0 right-0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="fill-white">
+          <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+        </svg>
+      </div>
+    </section>
+  
+    <!-- Our Story Section -->
+    <section class="py-16 md:py-24">
+      <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+          <div class="flex flex-col md:flex-row gap-12 items-center">
+            <div class="md:w-1/2">
+              <img src="assets/images/our-store.jpg" alt="Our Hardware Store" class="rounded-lg shadow-xl w-full h-auto">
+            </div>
+            <div class="md:w-1/2">
+              <h2 class="text-3xl font-bold text-gray-800 mb-6">Our Story</h2>
+              <div class="bg-yellow-400 h-1 w-16 mb-6"></div>
+              <p class="text-gray-600 mb-4">
+                Founded in 2010, HardwareHub began as a small local store with a simple mission: to provide high-quality hardware tools and materials at fair prices with exceptional customer service.
+              </p>
+              <p class="text-gray-600 mb-4">
+                What started as a modest 1,000-square-foot shop has grown into a nationwide supplier of premium hardware products. Despite our growth, we've maintained our core values of quality, integrity, and customer satisfaction.
+              </p>
+              <p class="text-gray-600">
+                Today, we offer thousands of products from trusted brands, catering to both professional contractors and DIY enthusiasts. Our knowledgeable staff continues to provide the personalized service that has been our hallmark since day one.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Company Values Section -->
+    <section class="py-16 bg-gray-100">
+      <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Our Values</h2>
+            <div class="bg-orange-500 h-1 w-16 mx-auto"></div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <ng-container *ngFor="let value of companyValues">
+                <app-card [cardData]="value"></app-card>
+              </ng-container>            
+         
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Company Timeline -->
+    <section class="py-16 md:py-24">
+      <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Our Journey</h2>
+            <div class="bg-yellow-400 h-1 w-16 mx-auto"></div>
+          </div>
+          
+          <div class="relative">
+            <!-- Timeline Line -->
+            <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-orange-200"></div>
+            
+            <!-- Timeline Items -->
+            <div class="space-y-12">
+                <ng-container *ngFor="let milestone of milestones; let i = index">
+                    <div class="flex flex-col md:flex-row items-center">
+                      
+                      <!-- Izquierda (par) o espacio vacío (impar) -->
+                      <div 
+                        class="md:w-1/2 md:pr-8 md:text-right" 
+                        [ngClass]="{'invisible md:order-1': i % 2 !== 0}">
+                        <app-card *ngIf="i % 2 === 0" [cardData]="milestone"></app-card>
+                      </div>
+                  
+                      <!-- Círculo central -->
+                      <div class="hidden md:flex md:items-center md:justify-center" [ngClass]="{'md:order-1': i % 2 !== 0}">
+                        <div class="bg-orange-500 rounded-full h-8 w-8 flex items-center justify-center border-4 border-white shadow-md z-10">
+                          <span class="text-white text-xs font-bold">{{i + 1}}</span>
+                        </div>
+                      </div>
+                  
+                      <!-- Derecha (impar) o espacio vacío (par) -->
+                      <div 
+                        class="md:w-1/2 md:pl-8 md:text-left md:order-2" 
+                        [ngClass]="{'invisible': i % 2 === 0}">
+                        <app-card *ngIf="i % 2 !== 0" [cardData]="milestone"></app-card>
+                      </div>
+                  
+                    </div>
+                  </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Team Section -->
+    <section class="py-16 bg-gray-100">
+      <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Meet Our Team</h2>
+            <div class="bg-orange-500 h-1 w-16 mx-auto"></div>
+            <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Our dedicated team of professionals is committed to providing you with the best hardware solutions and exceptional service.</p>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div *ngFor="let member of teamMembers" class="bg-white rounded-lg overflow-hidden shadow-md transition-transform duration-300 hover:transform hover:scale-105">
+            <app-card [cardData]="member"></app-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Contact CTA -->
+    <section class="py-16 bg-orange-500">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="text-3xl font-bold text-white mb-6">Have Questions?</h2>
+          <p class="text-xl text-white mb-8">Our team is here to help with any inquiries about our products or services.</p>
+          <a routerLink="/contact" class="inline-block bg-yellow-400 hover:bg-yellow-500 text-orange-800 font-bold py-3 px-8 rounded-full transition-colors duration-300">
+            Contact Us
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>

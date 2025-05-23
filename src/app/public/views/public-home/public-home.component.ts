@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CardModel } from '../../components/card/card-model';
-import { CategoryService } from '../../../_core/services/medical-info.service';
+import { CategoriesService } from '../../../_core/services/categories.service';
 
 @Component({
   selector: 'app-public-home',
@@ -14,7 +14,7 @@ export class PublicHomeComponent implements OnInit{
     imageSrc = '../../../../assets/images/yellow_pipes.jpg';
     searchTerm: string = '';
   
-    constructor(private categoryService: CategoryService){}
+    constructor(private categoryService: CategoriesService){}
     ngOnInit(): void {
       this.getCategories()
     }

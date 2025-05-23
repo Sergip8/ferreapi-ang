@@ -2,11 +2,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CardModel } from './card-model';
 import { KeyValuePipe, NgClass, NgFor, NgIf, UpperCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { SafeHtmlPipe } from '../../../_core/pipes/safe-html.pipe';
 
 
 @Component({
   selector: 'app-card',
-  imports: [NgClass, NgFor, NgIf, RouterLink, UpperCasePipe, KeyValuePipe],
+  imports: [NgClass, NgFor, NgIf, RouterLink, UpperCasePipe, KeyValuePipe, SafeHtmlPipe],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css'
 })
@@ -28,6 +29,8 @@ export class CardComponent {
         return `${baseClasses} bg-white border border-yellow-200 `;
       case 'testimonial':
         return `${baseClasses} border border-orange-200 bg-yellow-100 `;
+      case 'values':
+        return `${baseClasses} border border-gray-100 bg-gray-50 text-center`;
       default:
         return `${baseClasses} bg-white border border-gray-200 w-[300px]`;
     }
@@ -46,6 +49,8 @@ export class CardComponent {
         return `${baseClasses} bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800`;
       case 'testimonial':
         return `${baseClasses} bg-orange-500 hover:bg-orange-600`;
+      case 'values':
+        return `${baseClasses} bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700`;
       default:
         return `${baseClasses} bg-orange-500 hover:bg-orange-600`;
     }
@@ -62,6 +67,8 @@ export class CardComponent {
         return 'text-xl font-semibold text-yellow-800 mb-1';
       case 'testimonial':
         return 'text-xl font-medium text-orange-700 mb-1';
+      case 'values':
+        return 'text-xl font-medium text-blue-700 mb-1';
       default:
         return 'text-xl font-semibold text-gray-800 mb-1';
     }

@@ -1,0 +1,51 @@
+.subcategory-menu {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .subcategory-menu:not([hidden]) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .subcategory-menu {
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+  }
+  
+  /* Hover effect for subcategory items */
+  .subcategory-item a:hover {
+    box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.1), 0 2px 4px -1px rgba(249, 115, 22, 0.06);
+  }
+  
+  /* Optional: Style for active category */
+  .active-category {
+    background-color: #f97316; /* orange-600 */
+    font-weight: 600;
+  }
+  
+  /* Optional: Custom scrollbar for the subcategory menu */
+  .subcategory-menu::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .subcategory-menu::-webkit-scrollbar-track {
+    background: #f8fafc;
+  }
+  
+  .subcategory-menu::-webkit-scrollbar-thumb {
+    background-color: #fdba74; /* orange-300 */
+    border-radius: 20px;
+  }
+  
+  /* Line clamp for description text */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }

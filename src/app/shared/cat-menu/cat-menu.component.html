@@ -1,0 +1,93 @@
+<div class="relative" (mouseleave)="onMenuMouseLeave()">
+    <!-- Main Categories Menu -->
+    <nav class="bg-orange-500 shadow-md">
+      <div class="container mx-auto">
+        <ul class="flex flex-wrap justify-center">
+          <li *ngFor="let category of categories" 
+              class="relative group"
+              (mouseenter)="onCategoryHover(category)">
+            <a [routerLink]="['/category', category.category_id]" 
+               class="flex items-center px-4 py-3 text-white hover:bg-orange-600 transition-colors duration-200 cursor-pointer">
+              <span class="flex items-center">
+                <!-- Optional: Show category icon -->
+                <img *ngIf="category.image_url" 
+                     [src]="category.image_url" 
+                     [alt]="category.category_name"
+                     class="w-6 h-6 mr-2 rounded-sm hidden md:inline-block">
+                <span class="font-medium">{{ category.category_name }}</span>
+              </span>
+              
+              <!-- Arrow indicator if subcategories exist -->
+              <svg *ngIf="subcategoryExists(category)"
+                   xmlns="http://www.w3.org/2000/svg" 
+                   class="h-4 w-4 ml-1 text-yellow-400" 
+                   fill="none" 
+                   viewBox="0 0 24 24" 
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  
+    <!-- Subcategories Menu -->
+    <div *ngIf="isSubcategoryMenuVisible && activeCategory" 
+         class="subcategory-menu absolute left-0 right-0 z-50 bg-white shadow-lg border-t border-orange-300"
+         (mouseenter)="onSubcategoryMenuHover()">
+      <div class="container mx-auto py-6 px-4">
+        <!-- Subcategory Header -->
+        <div class="mb-4 pb-2 border-b border-gray-200">
+          <h3 class="text-xl font-bold text-orange-500">{{ activeCategory.category_name }}</h3>
+          <p class="text-gray-600 text-sm">{{ activeCategory.description }}</p>
+        </div>
+  
+        <!-- Subcategory Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div *ngFor="let subcategory of subcategories" 
+               class="subcategory-item group">
+            <a [routerLink]="['/category', subcategory.category_id]" 
+               class="block p-3 rounded-lg hover:bg-orange-50 transition-colors duration-200">
+              <div class="flex items-center mb-2">
+                <!-- Subcategory Image -->
+                <div class="w-12 h-12 mr-3 overflow-hidden rounded bg-gray-100 flex items-center justify-center">
+                  <img *ngIf="subcategory.image_url" 
+                       [src]="subcategory.image_url" 
+                       [alt]="subcategory.category_name"
+                       class="w-full h-full object-cover">
+                  <!-- Fallback icon if no image -->
+                  <svg *ngIf="!subcategory.image_url" 
+                       xmlns="http://www.w3.org/2000/svg" 
+                       class="h-6 w-6 text-gray-400" 
+                       fill="none" 
+                       viewBox="0 0 24 24" 
+                       stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                  </svg>
+                </div>
+                
+                <!-- Subcategory Details -->
+                <div>
+                  <h4 class="font-medium text-gray-800 group-hover:text-orange-500 transition-colors duration-200">
+                    {{ subcategory.category_name }}
+                  </h4>
+                  <p class="text-xs text-gray-500 line-clamp-1">
+                    {{ subcategory.description }}
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+  
+        <!-- View All Link -->
+        <div class="mt-6 text-center">
+          <a [routerLink]="['/category', activeCategory.category_id]" 
+             class="inline-block text-sm font-medium text-orange-500 hover:text-orange-600 transition-colors duration-200">
+            View All {{ activeCategory.category_name }} <span class="ml-1">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
