@@ -38,11 +38,15 @@ export class MapsComponent implements AfterViewInit, OnDestroy {
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngAfterViewInit(): void {
-    requestAnimationFrame(() => {
-    this.initializeLeaflet().then(() => {
-      this.initMap();
-    });
-  });
+   
+    if (isPlatformBrowser(this.platformId)) {
+        // Retraso para asegurarnos que el DOM esté completamente listo
+        setTimeout(() => {
+          this.initializeLeaflet().then(() => {
+            this.initMap();
+          });
+        }, 0);
+      }
   }
   ngOnDestroy(): void {
     // Limpiamos el mapa cuando el componente se destruye
