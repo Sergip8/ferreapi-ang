@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, Inject, PLATFORM_ID, OnDestroy } from "@angular/core";
-import { isPlatformBrowser, NgIf } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 
 // Importación condicional para Leaflet
 import type * as LeafletType from "leaflet";
@@ -10,12 +10,11 @@ import { Marker } from "../../models/map";
   imports: [],
   template: `
   <div id="map" class="w-full h-full"></div>
-
   `,
   styles: [""]
 })
 export class MapsComponent implements AfterViewInit, OnDestroy {
-    isPlatformBrowser = false
+  isPlatformBrowser = false;
   private map: any; 
   private L!: typeof LeafletType;
 
@@ -26,7 +25,6 @@ export class MapsComponent implements AfterViewInit, OnDestroy {
   set markers(markers: Marker[]) {
     this._markers = markers;
     if (this.mapInitialized && this._markers !== null) {
-      // update the map whenever the markers change
       this.loadMarkers();
     }
   }
@@ -34,22 +32,23 @@ export class MapsComponent implements AfterViewInit, OnDestroy {
     return this._markers;
   }
 
-  // Inyectamos PLATFORM_ID para verificar si estamos en el navegador o en el servidor
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isPlatformBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngAfterViewInit(): void {
-   
-    if (isPlatformBrowser(this.platformId)) {
-        // Retraso para asegurarnos que el DOM esté completamente listo
-        setTimeout(() => {
-          this.initializeLeaflet().then(() => {
-            this.initMap();
-          });
-        }, 0);
-      }
+    if (this.isPlatformBrowser) {
+      setTimeout(() => {
+        this.initializeLeaflet().then(() => {
+          this.initMap();
+        }).catch(error => {
+          console.error('Error inicializando Leaflet:', error);
+        });
+      }, 100); // Aumentamos el delay para asegurar que el DOM esté listo
+    }
   }
+
   ngOnDestroy(): void {
-    // Limpiamos el mapa cuando el componente se destruye
     if (this.map) {
       this.map.remove();
       this.map = null;
@@ -57,17 +56,26 @@ export class MapsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  // Método para cargar Leaflet dinámicamente
   private async initializeLeaflet(): Promise<void> {
     try {
-      // Importamos Leaflet dinámicamente solo en el navegador
       const L = await import('leaflet');
       this.L = L;
       
-      // Configuramos el icono por defecto
-      const iconRetinaUrl = "assets/images/marker-icon-2x.png";
-      const iconUrl = "assets/images/marker-icon.png";
-      const shadowUrl = "assets/images/marker-shadow.png";
+      // Configuración de iconos con CDN como fallback
+      let iconRetinaUrl = "/assets/images/marker-icon-2x.png";
+      let iconUrl = "/assets/images/marker-icon.png";
+      let shadowUrl = "/assets/images/marker-shadow.png";
+
+      // Fallback a CDN si los assets locales fallan
+      try {
+        // Verificar si los assets locales existen
+        await this.checkAssetExists(iconUrl);
+      } catch {
+        // Usar CDN como fallback
+        iconRetinaUrl = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png";
+        iconUrl = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png";
+        shadowUrl = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png";
+      }
       
       const iconDefault = L.icon({
         iconRetinaUrl,
@@ -80,88 +88,89 @@ export class MapsComponent implements AfterViewInit, OnDestroy {
         shadowSize: [41, 41]
       });
       
-      // Establecemos el icono por defecto
       L.Marker.prototype.options.icon = iconDefault;
     } catch (error) {
-      console.error("Error al cargar Leaflet", error);
+      console.error("Error al cargar Leaflet:", error);
+      throw error;
     }
   }
 
+  private checkAssetExists(url: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve();
+      img.onerror = () => reject();
+      img.src = url;
+    });
+  }
+
   private initMap(): void {
-    if (!this.L) return;
+    if (!this.L || !this.isPlatformBrowser) return;
     
     const L = this.L;
     
-
-
-    // Verificamos si hay un mapa existente y lo eliminamos
     if (this.map) {
       this.map.remove();
       this.map = null;
     }
     
-    // Verificamos si el elemento del mapa existe en el DOM
     const mapElement = document.getElementById('map');
     if (!mapElement) {
       console.error('Elemento del mapa no encontrado en el DOM');
       return;
     }
-    let center: [number, number] = [4.65, -74.1]; // Bogotá por defecto
+
+    let center: [number, number] = [4.65, -74.1]; 
     let zoom = 17; 
+    
     if (this.markers && this.markers.length === 1) {
-        center = [this.markers[0].lat, this.markers[0].lon];
-      }
-    // Inicializamos el mapa
-    try {
-      this.map = L.map("map", {
-        center: center, // Centro de Bogotá
-        zoom: zoom
-      });
-    } catch (e) {
-      console.error('Error al inicializar el mapa:', e);
-      return;
+      center = [this.markers[0].lat, this.markers[0].lon];
     }
 
+    try {
+      this.map = L.map("map", {
+        center: center, 
+        zoom: zoom,
+        zoomControl: true,
+        attributionControl: true
+      });
 
-    const tiles = L.tileLayer(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      {
-        maxZoom: 18,
-        minZoom: 3,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      const tiles = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          maxZoom: 18,
+          minZoom: 3,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }
+      );
+
+      tiles.addTo(this.map);
+      this.mapInitialized = true;
+
+      if (this.markers && this.markers.length > 0) {
+        this.loadMarkers();
       }
-    );
-
-    tiles.addTo(this.map);
-    this.mapInitialized = true;
-
-    // Cargamos los marcadores si están disponibles
-    if (this.markers && this.markers.length > 0) {
-      this.loadMarkers();
+    } catch (e) {
+      console.error('Error al inicializar el mapa:', e);
     }
   }
 
   private loadMarkers() {
-    if (!this.mapInitialized || !this.map || !this.L) {
+    if (!this.mapInitialized || !this.map || !this.L || !this.isPlatformBrowser) {
       return;
     }
 
     // Limpiar marcadores existentes
-    if (this.map.clearLayers) {
-      this.map.eachLayer((layer: any) => {
-        if (layer instanceof this.L.Marker) {
-          this.map.removeLayer(layer);
-        }
-      });
-    }
+    this.map.eachLayer((layer: any) => {
+      if (layer instanceof this.L.Marker) {
+        this.map.removeLayer(layer);
+      }
+    });
 
     // Añadir nuevos marcadores
-    for (let i = 0; i < this.markers.length; ++i) {
-      const marker = this.markers[i];
+    this.markers.forEach(marker => {
       const mapMarker = this.L.marker([marker.lat, marker.lon]);
-
       mapMarker.addTo(this.map);
-    }
+    });
   }
 }

@@ -30,6 +30,7 @@ import { SocialButtonsComponent } from '../shared/social-buttons/social-buttons'
 
 
 
+
 @NgModule({
   declarations: [PublicComponent, PublicHomeComponent, ProductCatalogComponent, ProductDetailComponent, ContactComponent, AboutComponent],
   imports: [
@@ -52,7 +53,8 @@ import { SocialButtonsComponent } from '../shared/social-buttons/social-buttons'
     FormsModule,
     ReactiveFormsModule,
     MapsComponent,
-    SocialButtonsComponent
+    SocialButtonsComponent,
+    
 ]
 })
 export class PublicModule {}
