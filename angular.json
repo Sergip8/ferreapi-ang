@@ -2,8 +2,10 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
+  
   "projects": {
     "pipe-web": {
+      
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -11,6 +13,7 @@
       "prefix": "app",
       "architect": {
         "build": {
+          
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/pipe-web",
