@@ -44,7 +44,7 @@ export class MapsComponent implements AfterViewInit, OnDestroy {
         }).catch(error => {
           console.error('Error inicializando Leaflet:', error);
         });
-      }, 100); // Aumentamos el delay para asegurar que el DOM esté listo
+      }, 200);
     }
   }
 
@@ -58,29 +58,68 @@ export class MapsComponent implements AfterViewInit, OnDestroy {
 
   private async initializeLeaflet(): Promise<void> {
     try {
-      const L = await import('leaflet');
-      this.L = L;
+      // Usar importación dinámica con múltiples fallbacks
+      let leafletModule: any;
       
-      // Configuración de iconos con CDN como fallback
-      let iconRetinaUrl = "/assets/images/marker-icon-2x.png";
-      let iconUrl = "/assets/images/marker-icon.png";
-      let shadowUrl = "/assets/images/marker-shadow.png";
-
-      // Fallback a CDN si los assets locales fallan
       try {
-        // Verificar si los assets locales existen
-        await this.checkAssetExists(iconUrl);
-      } catch {
-        // Usar CDN como fallback
-        iconRetinaUrl = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png";
-        iconUrl = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png";
-        shadowUrl = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png";
+        leafletModule = await import('leaflet');
+      } catch (e) {
+        console.warn('Importación directa de leaflet falló, intentando CDN');
+        await this.loadLeafletFromCDN();
+        this.L = (window as any).L;
+        return;
       }
+
+      // Manejar diferentes estructuras de módulo
+      this.L = leafletModule.default || leafletModule;
       
-      const iconDefault = L.icon({
-        iconRetinaUrl,
-        iconUrl,
-        shadowUrl,
+      // Verificar que se cargó correctamente
+      if (!this.L?.map) {
+        throw new Error('Leaflet no se cargó correctamente');
+      }
+
+      // Configurar iconos solo si están disponibles
+      this.configureIcons();
+      
+    } catch (error) {
+      console.error("Error al cargar Leaflet:", error);
+      throw error;
+    }
+  }
+
+  private async loadLeafletFromCDN(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if ((window as any).L) {
+        resolve();
+        return;
+      }
+
+      // Cargar CSS
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(link);
+
+      // Cargar JS
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error('Error cargando Leaflet desde CDN'));
+      document.head.appendChild(script);
+    });
+  }
+
+  private configureIcons(): void {
+    if (!this.L?.icon) {
+      console.warn('L.icon no disponible, saltando configuración de iconos');
+      return;
+    }
+
+    try {
+      const iconDefault = this.L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+        iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
@@ -88,26 +127,19 @@ export class MapsComponent implements AfterViewInit, OnDestroy {
         shadowSize: [41, 41]
       });
       
-      L.Marker.prototype.options.icon = iconDefault;
+      if (this.L.Marker?.prototype) {
+        this.L.Marker.prototype.options.icon = iconDefault;
+      }
     } catch (error) {
-      console.error("Error al cargar Leaflet:", error);
-      throw error;
+      console.warn('Error configurando iconos:', error);
     }
   }
 
-  private checkAssetExists(url: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve();
-      img.onerror = () => reject();
-      img.src = url;
-    });
-  }
-
   private initMap(): void {
-    if (!this.L || !this.isPlatformBrowser) return;
-    
-    const L = this.L;
+    if (!this.L?.map || !this.isPlatformBrowser) {
+      console.error('Leaflet no está disponible o no estamos en el navegador');
+      return;
+    }
     
     if (this.map) {
       this.map.remove();
@@ -116,26 +148,26 @@ export class MapsComponent implements AfterViewInit, OnDestroy {
     
     const mapElement = document.getElementById('map');
     if (!mapElement) {
-      console.error('Elemento del mapa no encontrado en el DOM');
+      console.error('Elemento del mapa no encontrado');
       return;
     }
 
     let center: [number, number] = [4.65, -74.1]; 
     let zoom = 17; 
     
-    if (this.markers && this.markers.length === 1) {
+    if (this.markers?.length === 1) {
       center = [this.markers[0].lat, this.markers[0].lon];
     }
 
     try {
-      this.map = L.map("map", {
+      this.map = this.L.map("map", {
         center: center, 
         zoom: zoom,
         zoomControl: true,
         attributionControl: true
       });
 
-      const tiles = L.tileLayer(
+      const tiles = this.L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
           maxZoom: 18,
@@ -147,7 +179,7 @@ export class MapsComponent implements AfterViewInit, OnDestroy {
       tiles.addTo(this.map);
       this.mapInitialized = true;
 
-      if (this.markers && this.markers.length > 0) {
+      if (this.markers?.length > 0) {
         this.loadMarkers();
       }
     } catch (e) {
@@ -155,8 +187,8 @@ export class MapsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private loadMarkers() {
-    if (!this.mapInitialized || !this.map || !this.L || !this.isPlatformBrowser) {
+  private loadMarkers(): void {
+    if (!this.mapInitialized || !this.map || !this.L?.marker || !this.isPlatformBrowser) {
       return;
     }
 
@@ -168,9 +200,13 @@ export class MapsComponent implements AfterViewInit, OnDestroy {
     });
 
     // Añadir nuevos marcadores
-    this.markers.forEach(marker => {
-      const mapMarker = this.L.marker([marker.lat, marker.lon]);
-      mapMarker.addTo(this.map);
+    this.markers?.forEach(marker => {
+      try {
+        const mapMarker = this.L.marker([marker.lat, marker.lon]);
+        mapMarker.addTo(this.map);
+      } catch (error) {
+        console.error('Error añadiendo marcador:', error);
+      }
     });
   }
 }
