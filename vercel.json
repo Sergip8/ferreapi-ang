@@ -1,13 +1,16 @@
 {
-  "version": 2,
-  "public": true,
-  "name": "pipe-web",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/api" }
-  ],
-  "functions": {
-    "api/index.js": {
-      "includeFiles": "dist/pipe-web/**"
+    "version": 2,
+    "public": true,
+    "name": "pipe-web",
+    "rewrites": [
+      {
+        "source": "/(.*)",
+        "destination": "/api"
+      }
+    ],
+    "functions": {
+      "api/index.js": {
+        "includeFiles": "dist/pipe-web/**"
+      }
     }
   }
-}
