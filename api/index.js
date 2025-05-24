@@ -1,3 +1,3 @@
-const server = require('../dist/YOUR_PROJECT_NAME/server/main');
+const server = require('../dist/pipe-web/server/server.mjs');
 
 module.exports = server.app();
