@@ -1,0 +1,8 @@
+
+/
+/catalog
+/contact
+/about
+/login
+/register
+/cart
