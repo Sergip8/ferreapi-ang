@@ -7,7 +7,7 @@
   ],
   "functions": {
     "api/index.js": {
-      "includeFiles": "dist/pipe-web/browser/**"
+      "includeFiles": "dist/pipe-web/**"
     }
   }
 }
