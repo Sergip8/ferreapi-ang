@@ -10,6 +10,7 @@ import { CartComponent } from '../shared/cart/cart.component';
 import { ContactComponent } from './views/contact/contact.component';
 import { AboutComponent } from './views/about/about.component';
 import { ProductResolver } from '../_core/resolvers/product-resolver';
+import { ProjectsComponent } from './views/projects/projects/projects.component';
 
 
 
@@ -56,6 +57,11 @@ const routes: Routes = [
     path: PublicRoutes.About,
     title: 'about',
     component: AboutComponent,
+  },
+   {
+    path: PublicRoutes.Projects,
+    title: 'projects',
+    component: ProjectsComponent,
   },
    {
     path: 'details/:id',
