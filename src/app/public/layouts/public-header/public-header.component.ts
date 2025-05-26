@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, Output, HostListener } from '@angular/core';
+import { Component, EventEmitter, Output, HostListener, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { PublicRoutes } from '../../public.routes';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,10 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { slideDownUp } from '../../../shared/utils/animations';
 import { CartService } from '../../../_core/services/cart.service';
 import { CatMenuComponent } from '../../../shared/cat-menu/cat-menu.component';
+
+import { CategoriesService } from '../../../_core/services/categories.service';
+import { Category } from '../../../models/category';
+import { get } from 'http';
 
 interface Product {
   product_id: number;
@@ -26,7 +30,7 @@ interface Product {
   styleUrl: './public-header.component.css',
   animations: [slideDownUp]
 })
-export class PublicHeaderComponent {
+export class PublicHeaderComponent implements OnInit {
   @Output() search = new EventEmitter<string>();
   isMobileMenuOpen = false;
   showDropdown = false;
@@ -35,6 +39,7 @@ export class PublicHeaderComponent {
   publicRoutes = PublicRoutes;
   showTopSection = true;
   showCatMenu = false;
+  categories: Category[] = [];
  
   
   navigation = [
@@ -45,9 +50,20 @@ export class PublicHeaderComponent {
     { name: 'Contact', path: '/contact' }
   ];
   cartItemsCount = 0;
-  constructor(private router: Router, private productService: ProductService, private cartService: CartService){
+  constructor(private router: Router, private productService: ProductService, private cartService: CartService, private categoryService: CategoriesService){
     this.cartItemsCount = this.cartService.getCartItemsCount();
   }
+  ngOnInit(): void {
+    this.getMenuCategories();
+  }
+
+    getMenuCategories(){
+    this.categoryService.getMenuCategories().subscribe((res) => {
+      this.categories = res;
+      console.log(this.categories);
+    });
+  }
+
 
 
   onSearch(event: Event) {

@@ -1,7 +1,7 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { TableComponent } from '../../../shared/table/table.component';
 import { FilterComponent } from '../../../shared/filter/filter.component';
-import { Category } from '../../../models/categories';
+import { Category } from '../../../models/category';
 import { CategoriesService } from '../../../_core/services/categories.service';
 import { AlertType } from '../../../shared/alert/alert.type';
 import { Pagination } from '../../../shared/pagination/pagination-model';

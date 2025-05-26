@@ -3,7 +3,7 @@
     <nav class="bg-orange-500 shadow-md">
       <div class="container mx-auto">
         <ul class="flex flex-wrap justify-center">
-          <li *ngFor="let category of categories" 
+          <li *ngFor="let category of mainCategories" 
               class="relative group"
               (mouseenter)="onCategoryHover(category)">
             <a [routerLink]="['/category', category.category_id]" 

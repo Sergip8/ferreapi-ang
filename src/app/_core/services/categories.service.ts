@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
-import { Category } from '../../models/categories';
+import { Category } from '../../models/category';
 import { EntityPagination } from '../../models/product';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -34,5 +34,8 @@ export class CategoriesService {
   }
   GetMainCategories(){
     return this.http.get<Category[]>(baseUrl+ 'categories/main')
+  }
+  getMenuCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(baseUrl + 'categories/menu');
   }
 }

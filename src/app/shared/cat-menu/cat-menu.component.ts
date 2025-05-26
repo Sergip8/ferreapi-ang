@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Category } from '../../models/category';
+import { CategoriesService } from '../../_core/services/categories.service';
 
 
 @Component({
@@ -12,10 +13,15 @@ import { Category } from '../../models/category';
   styleUrls: ["./cat-menu.component.css"]
 })
 export class CatMenuComponent implements OnInit {
-  categories: Category[] = [];
+  @Input() categories: Category[] = [];
+  mainCategories: Category[] = [];
   activeCategory!: Category 
   subcategories: Category[] = [];
   isSubcategoryMenuVisible = false;
+
+
+
+
 
   // This would normally come from a service
   mockCategories: Category[] = [
@@ -195,12 +201,14 @@ export class CatMenuComponent implements OnInit {
     // });
     
     // Using mock data for demonstration
-    this.categories = this.mockCategories.filter(cat => cat.parent_category_id === 0 && cat.is_active);
+    console.log(this.categories)
+    this.mainCategories = this.categories.filter(cat => cat.parent_category_id === null && cat.is_active);
+    console.log(this.mainCategories);
   }
 
   onCategoryHover(category: Category): void {
     this.activeCategory = category;
-    this.subcategories = this.mockCategories.filter(
+    this.subcategories = this.categories.filter(
       cat => cat.parent_category_id === category.category_id && cat.is_active
     );
     this.isSubcategoryMenuVisible = this.subcategories.length > 0;
@@ -219,7 +227,7 @@ export class CatMenuComponent implements OnInit {
     this.isSubcategoryMenuVisible = true;
   }
   subcategoryExists(category: Category): boolean {
-    return this.mockCategories.some(sub => sub.parent_category_id === category.category_id);
+    return this.categories.some(sub => sub.parent_category_id === category.category_id);
   }
 
   private hideTimeout: any;

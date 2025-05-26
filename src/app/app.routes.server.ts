@@ -41,6 +41,10 @@ export const serverRoutes: ServerRoute[] = [
       path: PublicRoutes.About,
       renderMode: RenderMode.Prerender
     },
+    {
+      path: PublicRoutes.Projects,
+      renderMode: RenderMode.Prerender
+    },
    {
     path: 'details/:id',
     renderMode: RenderMode.Server,
