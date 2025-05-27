@@ -1,12 +1,12 @@
 <!-- header.component.html -->
-<header class="bg-white shadow-lg fixed w-full top-0 z-50">
+<header class="bg-gray-100 shadow-lg fixed w-full top-0 z-50">
   <nav>
     <!-- Animated Section: Top Bar with Navigation Links -->
-    <div class="bg-white">
+    <div class="bg-gray-50 ">
       <div class="grid grid-cols-12 md:grid-cols-12 items-center h-20 px-4 sm:px-6 lg:px-8">
         <!-- Logo - 2/12 (md), 6/12 (sm) -->
         <div class="col-span-6 md:col-span-2 flex items-center justify-center md:justify-start py-2 md:py-0" [routerLink]="publicRoutes.Home">
-          <img src="assets/logo.svg" alt="PVC Supply Co." class="h-10 w-auto">
+          <img src="../../../../assets/images/ferreshop_logo.png" alt="PVC Supply Co." class="h-10 w-auto">
           <span class="ml-3 text-2xl font-bold text-brand-red-500 cursor-pointer hidden sm:inline">PVC Supply Co.</span>
         </div>
         
@@ -109,6 +109,8 @@
       </div>
     </div>
   </nav>
+  <div class="hidden md:block">
+    <app-cat-menu *ngIf="categories.length > 0" [categories]="categories"></app-cat-menu>
 
-  <app-cat-menu *ngIf="categories.length > 0" [categories]="categories"></app-cat-menu>
+  </div>
 </header>

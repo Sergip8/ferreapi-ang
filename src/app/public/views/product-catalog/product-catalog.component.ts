@@ -134,6 +134,7 @@ export class ProductCatalogComponent implements OnInit {
   }
 
   toggleMobileFilters() {
+    console.log("Toggling mobile filters")
     this.showMobileFilters = !this.showMobileFilters;
   }
 

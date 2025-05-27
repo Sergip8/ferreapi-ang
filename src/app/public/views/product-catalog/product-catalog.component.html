@@ -8,11 +8,11 @@
   <div class="container mx-auto px-4 py-8">
     <!-- Filter Top Bar -->
     <div class="mb-6">
-      <app-filter-top (viewModeChanged)="onViewModeChange($event)"></app-filter-top>
+      <app-filter-top (mobileFiltersToggled)="toggleMobileFilters()" (viewModeChanged)="onViewModeChange($event)"></app-filter-top>
     </div>
 
     <!-- Mobile Filter Button - Only shown on mobile -->
-    <div class="lg:hidden mb-6">
+    <!-- <div class="lg:hidden mb-6">
       <button (click)="toggleMobileFilters()" 
               class="w-full flex items-center justify-center gap-2 bg-orange-100 hover:bg-orange-200 text-orange-800 font-medium py-2 px-4 rounded-md transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -20,7 +20,7 @@
         </svg>
         Filters
       </button>
-    </div>
+    </div> -->
 
     <div class="flex flex-col lg:flex-row gap-6">
       <!-- Sidebar Container -->

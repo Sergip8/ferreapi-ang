@@ -25,6 +25,7 @@ interface SortOption {
   <div class="filter-top bg-white shadow-sm border border-gray-200 rounded-lg p-4 mb-6">
   <div class="container mx-auto">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      
       <!-- Left section with filter counts and active filters -->
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
         <div class="text-gray-700">
@@ -52,8 +53,17 @@ interface SortOption {
       </div>
       
       <!-- Right section with sort dropdown and view switcher -->
-      <div class="flex items-center gap-4 self-end md:self-auto">
+      <div class="flex items-center gap-4 self-end md:self-auto ">
         <!-- Sort dropdown -->
+            <div class="md:hidden">
+      <button (click)="toggleMobileFilters()" 
+             class="w-full flex items-center justify-center gap-2 bg-orange-100 hover:bg-orange-200 text-orange-800 font-medium py-2 px-4 rounded-md transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+        </svg>
+        Filters
+      </button>
+    </div>
         <div class="relative">
           <label for="sort-select" class="text-sm text-gray-600 mr-2">Sort by:</label>
           <div class="inline-block relative">
@@ -96,15 +106,7 @@ interface SortOption {
     </div>
     
     <!-- Optional mobile filter button (appears only on mobile) -->
-    <div class="mt-4 md:hidden">
-      <button (click)="toggleMobileFilters()" 
-             class="w-full flex items-center justify-center gap-2 bg-orange-100 hover:bg-orange-200 text-orange-800 font-medium py-2 px-4 rounded-md transition-colors">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
-        </svg>
-        Filters
-      </button>
-    </div>
+ 
   </div>
 </div>
   `,
@@ -113,7 +115,7 @@ interface SortOption {
 export class FilterTopComponent implements OnInit {
   @Input() activeFilters: FilterOption[] = [];
   @Input() viewMode: 'grid' | 'list' = 'grid';
-  
+  @Output() mobileFilterToggled = new EventEmitter();
   @Output() sortChanged = new EventEmitter<string>();
   @Output() viewModeChanged = new EventEmitter<'grid' | 'list'>();
   @Output() filterRemoved = new EventEmitter<FilterOption>();
