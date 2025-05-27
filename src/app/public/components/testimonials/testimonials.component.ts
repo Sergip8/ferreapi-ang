@@ -5,30 +5,32 @@ import { CardModel } from '../card/card-model';
 import { CardComponent } from "../card/card.component";
 
 interface Testimonial {
-    id: number;
-    text: string;
-    author: string;
-    position: string;
+  id: number;
+  text: string;
+  author: string;
+  position: string;
 }
 
 @Component({
-    selector: 'app-testimonials',
-    standalone: true,
-    imports: [CommonModule, ProductCardComponent, CardComponent],
-    template: `
+  selector: 'app-testimonials',
+  standalone: true,
+  imports: [CommonModule, ProductCardComponent, CardComponent],
+  template: `
     <section class="py-12 md:py-16 text-white">
       <div class="container mx-auto px-4">
      
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="relative p-8 overflow-hidden max-w-xl w-full mx-auto ">
+        
     <!-- Background Gradient with ::before replacement -->
   
 
+      <div class="flex items-end ">
+        <app-title [title]="title"></app-title>
+      </div>
+      
     
-    <app-title [title]="title"></app-title>
-    
-  </div>
+
           
             <app-card *ngFor="let testimonial of cardData" [cardData]="testimonial"></app-card>
           
@@ -42,11 +44,11 @@ interface Testimonial {
   `
 })
 export class TestimonialsComponent {
-    title = {
-        main: "What our customers",
-        strong: "say",
-        final: "about our services",
-        subtitle: "Don't just take our word for it"
-    }
-    @Input() cardData!: CardModel[];
+  title = {
+    main: "What our customers",
+    strong: "say",
+    final: "about our services",
+    subtitle: "Don't just take our word for it"
+  }
+  @Input() cardData!: CardModel[];
 }

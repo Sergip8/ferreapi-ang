@@ -26,7 +26,7 @@ export class CardComponent {
       case 'product':
         return `${baseClasses} ${layoutClasses} from-gray-50 to-gray-100 border border-orange-500 w-full`;
       case 'category':
-        return `${baseClasses} ${layoutClasses} bg-gradient-to-br from-orange-50 to-orange-100 border-l-4 border-orange-500 w-full`;
+        return `${baseClasses} ${layoutClasses} bg-white border-l-4 border-orange-500 w-full`;
       case 'service':
         return `${baseClasses} ${layoutClasses} bg-white border border-yellow-200 `;
       case 'testimonial':

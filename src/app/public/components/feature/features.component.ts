@@ -14,7 +14,7 @@ import { CardModel } from '../card/card-model';
   <div class="container mx-auto px-4 sm:px-6">
 
     <!-- Collage Grid Layout -->
-    <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-6 mx-auto">
 
       <!-- Featured Card - Spans 2 columns and rows -->
       <div class="sm:col-span-2 md:row-span-1">

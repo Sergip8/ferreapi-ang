@@ -17,7 +17,7 @@ const sampleImg = '/assets/images/yellow_pipes.jpg';
   standalone: true,
   imports: [ ],
   template: `
-    <div class="">
+    <div class="mb-5">
       <h3 class="text-2xl md:text-3xl leading-[1.3]">
         <div class="relative inline-block font-normal mb-2 text-orangeAccent">
           {{title.main}}
