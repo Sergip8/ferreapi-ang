@@ -23,8 +23,8 @@ interface Category {
         <h2 class="text-2xl md:text-3xl font-bold text-red-800 mb-2 text-center">Product Categories</h2>
         <p class="text-gray-600 text-center mb-8">Browse our extensive selection of high-quality PVC products</p>
         
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-         <app-card (onClickCard)="gotoCat(cat.id)" *ngFor="let cat of cardData" [cardData]="cat"></app-card>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+         <app-card class="" (onClickCard)="gotoCat(cat.id)" *ngFor="let cat of cardData" [cardData]="cat"></app-card>
         </div>
       </div>
     </section>
@@ -37,7 +37,7 @@ export class CategoryGridComponent {
 
     gotoCat(id: number){
 
-      this.router.navigate([PublicRoutes.Catalog], { queryParams: { category: id }, queryParamsHandling: 'merge' })
+      this.router.navigate([PublicRoutes.Catalog], { queryParams: { cat: id }, queryParamsHandling: 'merge' })
 
     }
 }

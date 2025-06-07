@@ -3,7 +3,7 @@
   <nav>
     <!-- Animated Section: Top Bar with Navigation Links -->
     <div class="bg-gray-50 ">
-      <div class="grid grid-cols-12 md:grid-cols-12 items-center h-20 px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-12 md:grid-cols-12 items-center h-20 px-4 sm:px-6 lg:px-8 gap-3">
         <!-- Logo - 2/12 (md), 6/12 (sm) -->
         <div class="col-span-6 md:col-span-2 flex items-center justify-center md:justify-start py-2 md:py-0" [routerLink]="publicRoutes.Home">
           <img src="../../../../assets/images/ferreshop_logo.png" alt="PVC Supply Co." class="h-10 w-auto">
@@ -22,7 +22,7 @@
         </div>
 
         <!-- Search Bar - 12/12 (sm), 4/12 (md+) -->
-        <div class="col-span-12 md:col-span-4 flex justify-center order-3 md:order-none mt-2 md:mt-0">
+        <div class="col-span-12 md:col-span-4 flex order-3 md:order-none mt-2 md:mt-0 justify-start">
           <div class="relative w-full max-w-2xl">
             <input type="text" 
                    [(ngModel)]="searchTerm"

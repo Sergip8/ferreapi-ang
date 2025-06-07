@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Category } from '../../models/category';
 import { CategoriesService } from '../../_core/services/categories.service';
+import { PublicRoutes } from '../../public/public.routes';
 
 
 @Component({
@@ -13,6 +14,12 @@ import { CategoriesService } from '../../_core/services/categories.service';
   styleUrls: ["./cat-menu.component.css"]
 })
 export class CatMenuComponent implements OnInit {
+
+
+  constructor(private router: Router){}
+goToCat(cat: Category) {
+ this.router.navigate([PublicRoutes.Catalog], { queryParams: { cat: cat.category_id }, queryParamsHandling: 'merge' })
+}
   @Input() categories: Category[] = [];
   mainCategories: Category[] = [];
   activeCategory!: Category 

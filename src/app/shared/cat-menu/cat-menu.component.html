@@ -6,7 +6,7 @@
           <li *ngFor="let category of mainCategories" 
               class="relative group"
               (mouseenter)="onCategoryHover(category)">
-            <a [routerLink]="['/category', category.category_id]" 
+            <a (click)="goToCat(category)" 
                class="flex items-center px-4 py-3 text-orange-600 hover:bg-orange-100 transition-colors duration-200 cursor-pointer">
               <span class="flex items-center">
                 <!-- Optional: Show category icon -->
@@ -47,7 +47,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div *ngFor="let subcategory of subcategories" 
                class="subcategory-item group">
-            <a [routerLink]="['/category', subcategory.category_id]" 
+            <a (click)="goToCat(subcategory)" 
                class="block p-3 rounded-lg hover:bg-orange-50 transition-colors duration-200">
               <div class="flex items-center mb-2">
                 <!-- Subcategory Image -->
@@ -83,7 +83,7 @@
   
         <!-- View All Link -->
         <div class="mt-6 text-center">
-          <a [routerLink]="['/category', activeCategory.category_id]" 
+          <a (click)="goToCat(activeCategory)" 
              class="inline-block text-sm font-medium text-orange-500 hover:text-orange-600 transition-colors duration-200">
             View All {{ activeCategory.category_name }} <span class="ml-1">→</span>
           </a>
